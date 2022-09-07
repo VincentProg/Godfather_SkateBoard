@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using TMPro;
 
 public class PlayerControllerV : MonoBehaviour
 {
@@ -23,6 +24,10 @@ public class PlayerControllerV : MonoBehaviour
     private float decelerationSpeed;
     [SerializeField]
     private float turnSpeed;
+
+    [SerializeField]
+    TextMeshProUGUI textSpeed;
+
 
     private void Awake()
     {
@@ -53,13 +58,15 @@ public class PlayerControllerV : MonoBehaviour
         float yAngle = transform.rotation.eulerAngles.y + movementInput.x;
         transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + movementInput.x, 0);
         rb.velocity = transform.forward * rb.velocity.magnitude;
+
+        textSpeed.text = ((int)(rb.velocity.magnitude * 3)).ToString();
     }
 
     IEnumerator Impulse()
     {
         canImpulse = false;
-
-        rb.velocity += Vector3.ClampMagnitude(transform.forward * strengthImpulse, playerMaxSpeed);
+        rb.velocity += transform.forward * strengthImpulse;
+        rb.velocity = Vector3.ClampMagnitude(rb.velocity, playerMaxSpeed);
         yield return new WaitForSeconds(1);
         canImpulse = true;
     }
