@@ -4,34 +4,76 @@ using UnityEngine;
 
 public class CharStats : MonoBehaviour
 {
+    public bool Debugmod;
+
     public float Health = 50f;
     public float base_Damage = 10;
-    public GameObject other_Player;
 
-    CharStats scrpt;
+    GameObject _parentGO;
+    Rigidbody _parentRB;
 
+    Rigidbody _parentRbP2;
+
+    public GameObject _hitboxP2;
+    public GameObject _hurtboxP2;
+    CharStats Enemy_stats;
+
+    Vector3 _dirToP2;
+    void Start()
+    {
+        Enemy_stats = _hitboxP2.GetComponent<CharStats>();
+        _parentGO = transform.parent.gameObject;
+        _parentRB = _parentGO.GetComponent<Rigidbody>();
+
+        _parentRbP2 = _hitboxP2.transform.parent.gameObject.GetComponent<Rigidbody>();
+
+    }
     private void OnTriggerEnter(Collider other)
     {
         if (other.name == "HurtBox")
         {
-            scrpt.Health -= base_Damage;
-            print("Lost 10 HP now : " + scrpt.Health);
+            DamageP2(base_Damage);
+            EjectP2();
         }
-        else if (other.name == "HitBox")
+        
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.name == "HitBox")
         {
-            print("Bump");
+            EjectP2();
+        }
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            print(collision.contacts[0].normal);
+            EjectMe();
         }
     }
-    // Start is called before the first frame update
-    void Start()
+    void DamageP2(float damage)
     {
-        scrpt = other_Player.GetComponent<CharStats>();
-
+        Enemy_stats.Health -= damage;
+        print("Lost " + damage + " HP now : " + Enemy_stats.Health);
+    }
+    void EjectP2()
+    {
+        _parentRbP2.AddForce(_dirToP2 * -2f, ForceMode.Impulse);
+        print("Bump");
+    }
+    void EjectMe()
+    {
+        //_parentRB.AddForce();
+        print("BumpMe");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        _dirToP2 = transform.position - _hurtboxP2.transform.position;
+
+        if (Debugmod)
+        {
+            Debug.DrawLine(transform.position, _hurtboxP2.transform.position);
+            /*print(_dirToP2);*/
+        }
     }
 }
