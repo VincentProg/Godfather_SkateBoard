@@ -3,21 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
 public class PlayerControllerV : MonoBehaviour
 {
     [SerializeField]
-    private float playerSpeed = 2.0f;
-    [SerializeField]
-    private float jumpHeight = 1.0f;
+    private float playerMaxSpeed;
     [SerializeField]
     private float gravityValue = -9.81f;
 
-    private CharacterController controller;
     private Vector3 playerVelocity;
     private bool groundedPlayer;
 
     private Vector2 movementInput;
+
+    private Rigidbody rb;
+    private bool canImpulse;
+    [SerializeField]
+    private float strengthImpulse;
+    [SerializeField]
+    private float decelerationSpeed;
+    [SerializeField]
+    private float turnSpeed;
 
     private void Awake()
     {
@@ -26,7 +31,8 @@ public class PlayerControllerV : MonoBehaviour
 
     private void Start()
     {
-        controller = gameObject.GetComponent<CharacterController>();
+        rb = GetComponent<Rigidbody>();
+        canImpulse = true;
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -34,24 +40,28 @@ public class PlayerControllerV : MonoBehaviour
         movementInput = context.ReadValue<Vector2>();
     }
 
-    void Update()
+    public void OnImpulse()
     {
-        groundedPlayer = controller.isGrounded;
-        if (groundedPlayer && playerVelocity.y < 0)
-        {
-            playerVelocity.y = 0f;
-        }
+        print("impulse");
+        if (canImpulse)
+            StartCoroutine(Impulse()) ;
+    }
 
-        Vector3 move = new Vector3(movementInput.x, 0, movementInput.y);
-        controller.Move(move * Time.deltaTime * playerSpeed);
+    void FixedUpdate()
+    {
+        rb.velocity = rb.velocity.normalized * (rb.velocity.magnitude - decelerationSpeed);
+        float yAngle = transform.rotation.eulerAngles.y + movementInput.x;
+        transform.rotation = Quaternion.Euler(0, transform.rotation.eulerAngles.y + movementInput.x, 0);
+        rb.velocity = transform.forward * rb.velocity.magnitude;
+    }
 
-        if (move != Vector3.zero)
-        {
-            gameObject.transform.forward = move;
-        }
+    IEnumerator Impulse()
+    {
+        canImpulse = false;
 
-        playerVelocity.y += gravityValue * Time.deltaTime;
-        controller.Move(playerVelocity * Time.deltaTime);
+        rb.velocity += Vector3.ClampMagnitude(transform.forward * strengthImpulse, playerMaxSpeed);
+        yield return new WaitForSeconds(1);
+        canImpulse = true;
     }
 }
 
