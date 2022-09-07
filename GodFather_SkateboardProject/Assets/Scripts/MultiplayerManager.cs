@@ -7,6 +7,9 @@ public class MultiplayerManager : MonoBehaviour
     public static MultiplayerManager instance;
     private PlayerControllerV[] players = new PlayerControllerV[2];
 
+    [SerializeField]
+    private LayerMask[] masks = new LayerMask[2];
+
     public void Awake()
     {
         if (instance == null)
@@ -17,15 +20,25 @@ public class MultiplayerManager : MonoBehaviour
     }
     public void AddPlayer(PlayerControllerV player)
     {
-        if (players.Length >= 2) return;
+        if (players[1] != null) return;
 
-        if(players.Length == 0)
+        if(players[0] == null)
         {
             players[0] = player;
         } else
         {
             players[1] = player;
         }
+
+        PlayerSpawn(player);
+    }
+
+    private void PlayerSpawn(PlayerControllerV player)
+    {
+        player.gameObject.layer = (players[1] != null) ? 8 : 7;
+        player.transform.parent.Find("Vcam").gameObject.layer = (players[1] != null) ? 8 : 7;
+        player.transform.parent.GetComponentInChildren<Camera>().cullingMask = (players[1] != null) ? masks[1] : masks[0];
+        
     }
 
     public void PlayerDeath(PlayerControllerV player)
