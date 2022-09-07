@@ -6,6 +6,9 @@ public class CharStats : MonoBehaviour
 {
     public bool Debugmod;
 
+    [Range(0f,200f)]
+    [Tooltip("In Percent")]
+    public int gaindspeed = 100;
     public float Health = 50f;
     public float base_Damage = 10;
 
@@ -18,7 +21,8 @@ public class CharStats : MonoBehaviour
     public GameObject _hurtboxP2;
     CharStats Enemy_stats;
 
-    Vector3 _dirToP2;
+    Vector3 _dirToP1;
+    Vector3 _velGo;
     void Start()
     {
         Enemy_stats = _hitboxP2.GetComponent<CharStats>();
@@ -46,6 +50,10 @@ public class CharStats : MonoBehaviour
         if (collision.gameObject.CompareTag("Wall"))
         {
             print(collision.contacts[0].normal);
+            Vector3 Newdir = Vector3.Reflect(_velGo, collision.contacts[0].normal);
+            _parentRB.AddForce(Newdir * (gaindspeed/100f), ForceMode.Impulse);
+            _parentGO.transform.rotation = Quaternion.LookRotation(-Newdir, Vector3.up);
+            print(_parentRB);
             EjectMe();
         }
     }
@@ -56,9 +64,9 @@ public class CharStats : MonoBehaviour
     }
     void EjectP2()
     {
-        _parentRbP2.AddForce(_dirToP2 * -2f, ForceMode.Impulse);
-        print("Bump");
-    }
+        _parentRbP2.AddForce(-_dirToP1 * 20f, ForceMode.Impulse);
+        print("Bump to " + -_dirToP1);
+    } 
     void EjectMe()
     {
         //_parentRB.AddForce();
@@ -68,12 +76,14 @@ public class CharStats : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        _dirToP2 = transform.position - _hurtboxP2.transform.position;
+        _dirToP1 = transform.position - _hurtboxP2.transform.position + new Vector3(0, -0f,0);
+        _velGo = _parentRB.velocity;
 
         if (Debugmod)
         {
             Debug.DrawLine(transform.position, _hurtboxP2.transform.position);
-            /*print(_dirToP2);*/
+            /*print(_dirToP1);*/
         }
     }
+
 }
