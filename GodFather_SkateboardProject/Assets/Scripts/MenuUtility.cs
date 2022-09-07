@@ -12,21 +12,17 @@ public class MenuUtility : MonoBehaviour
     [SerializeField]
     private GameObject PauseMenu;
 
-    [SerializeField]
-    private KeyCode keyPause;
     private bool isPaused;
 
     private void Update()
     {
-        if(canPause)
-        if (Input.GetKeyDown(keyPause))
-        {
-            SetPause();
-        }
+
     }
 
     public void SetPause()
     {
+        if (!canPause) return;
+
         isPaused = !isPaused;
         PauseMenu.SetActive(isPaused);
         if (isPaused)
