@@ -90,6 +90,7 @@ public class HoverController : MonoBehaviour
         currentTorque = turnTorque;
         downDir = -transform.parent.transform.up;
         myInputs = GetComponent<PlayerInput>();
+        MultiplayerManager.instance.AddPlayer(this);
         Debug.Log(downDir);
     }
 

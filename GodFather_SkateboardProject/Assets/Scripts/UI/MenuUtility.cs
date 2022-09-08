@@ -27,7 +27,6 @@ public class MenuUtility : MonoBehaviour
         if (!canPause) return;
         
         IsPaused = !IsPaused;
-        print(IsPaused);
         MultiplayerManager.instance.SetPause(IsPaused);
         PauseMenu.SetActive(IsPaused);
         Time.timeScale = IsPaused ? 0 : 1;

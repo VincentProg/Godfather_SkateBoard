@@ -58,7 +58,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 0140f74ac50420649a55938618ef09a3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
@@ -291,7 +291,7 @@ Canvas:
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_TargetDisplay: 0
 --- !u!114 &3747233312863929575
 MonoBehaviour:
@@ -631,7 +631,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initialScale: {x: 0.8, y: 0.8, z: 0.8}
   offset: {x: 0, y: 5, z: 0}
-  text: {fileID: 4571373037177566492}
+  text: {fileID: 4755527430201896947}
   SelectedColor: {r: 1, g: 0.3254902, b: 0.9254902, a: 1}
 --- !u!1 &3747233313799017454
 GameObject:
@@ -823,7 +823,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 2100000, guid: 0140f74ac50420649a55938618ef09a3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}

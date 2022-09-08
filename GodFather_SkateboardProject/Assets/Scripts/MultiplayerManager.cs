@@ -66,8 +66,12 @@ public class MultiplayerManager : MonoBehaviour
     {       
         foreach(HoverController player in players)
         {
-            if(player != null)
-            player.SwitchInputs(activatePause);
+
+            if (player != null)
+            {
+                print("multimanager");
+                player.SwitchInputs(activatePause);
+            }
         }
     }
 }

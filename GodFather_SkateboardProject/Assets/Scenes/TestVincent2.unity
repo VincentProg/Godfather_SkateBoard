@@ -803,17 +803,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 595d084d5f65f1242b932a5e55ca5300, type: 3}
   m_PrefabInstance: {fileID: 414487973}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1019956226 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4755527430201896947, guid: 959f9957765681342ae34542985a3cf0, type: 3}
-  m_PrefabInstance: {fileID: 1205307137}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5f7201a12d95ffc409449d95f23cf332, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1033742606
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -940,10 +929,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3727128753717241224, guid: 959f9957765681342ae34542985a3cf0, type: 3}
-      propertyPath: text
-      value: 
-      objectReference: {fileID: 1019956226}
     - target: {fileID: 3747233312863929497, guid: 959f9957765681342ae34542985a3cf0, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -1032,18 +1017,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Canvas_PauseMenu
       objectReference: {fileID: 0}
-    - target: {fileID: 3747233312863929574, guid: 959f9957765681342ae34542985a3cf0, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4571373037177566492, guid: 959f9957765681342ae34542985a3cf0, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 2100000, guid: 0140f74ac50420649a55938618ef09a3, type: 3}
-    - target: {fileID: 4755527430201896947, guid: 959f9957765681342ae34542985a3cf0, type: 3}
-      propertyPath: m_Material
-      value: 
-      objectReference: {fileID: 2100000, guid: 0140f74ac50420649a55938618ef09a3, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 959f9957765681342ae34542985a3cf0, type: 3}
 --- !u!1 &1209475208 stripped
