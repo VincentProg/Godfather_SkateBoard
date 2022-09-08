@@ -126,7 +126,6 @@ public class HoverController : MonoBehaviour
         TorqueSetting();
         
         rb.AddTorque(Axis.x * turnTorque * Time.fixedDeltaTime * transform.up, ForceMode.Impulse);
-
         LimitMaxSpeed();
     }
     float calculspeed;
@@ -150,7 +149,7 @@ public class HoverController : MonoBehaviour
     private void LimitRotation()
     {
         //Si le skate se retourne
-        if (Mathf.Abs(transform.position.z) >= 90f || Mathf.Abs(transform.position.x) >= 110f) { WaitToReset(); }
+        if (Mathf.Abs(transform.position.z) >= 90f || Mathf.Abs(transform.position.x) >= 110f) { ResetRotation(); }
         if (Input.GetKeyDown(KeyCode.R)) ResetRotation();
     }
     private void WaitToReset()
