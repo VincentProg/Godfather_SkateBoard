@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MultiplayerManager : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class MultiplayerManager : MonoBehaviour
     [SerializeField]
     private LayerMask[] masks = new LayerMask[2];
 
+    [SerializeField]
+    private GameObject canvasSplitScreen;
+
     public void Awake()
     {
         if (instance == null)
@@ -17,6 +21,7 @@ public class MultiplayerManager : MonoBehaviour
             instance = this;
         }
         else Destroy(gameObject);
+
     }
     public void AddPlayer(PlayerControllerV player)
     {
@@ -28,6 +33,10 @@ public class MultiplayerManager : MonoBehaviour
         } else
         {
             players[1] = player;
+            players[0].transform.parent.GetComponentInChildren<Camera>().rect = new Rect(0, 0, 1, 0.5f);
+            players[1].transform.parent.GetComponentInChildren<Camera>().rect = new Rect(0, 0.5f, 1, 0.5f);
+
+            canvasSplitScreen.SetActive(true);
         }
 
         PlayerSpawn(player);
