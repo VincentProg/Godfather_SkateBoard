@@ -209,8 +209,11 @@ public class HoverController : MonoBehaviour
 
     public void Pause_BtnUp(InputAction.CallbackContext context)
     {
-        if(context.started)
-        Btn_Selector.instance.SelectButton0();
+        if (context.started)
+        {
+            print("button up");
+            Btn_Selector.instance.SelectButton0();
+        }
     }
 
     public void Pause_BtnDown(InputAction.CallbackContext context)
