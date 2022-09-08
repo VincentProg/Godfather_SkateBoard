@@ -47,7 +47,14 @@ public class MultiplayerManager : MonoBehaviour
         player.gameObject.layer = (players[1] != null) ? 8 : 7;
         player.transform.Find("Vcam").gameObject.layer = (players[1] != null) ? 8 : 7;
         player.transform.parent.GetComponentInChildren<Camera>().cullingMask = (players[1] != null) ? masks[1] : masks[0];
+        if (players[1] != null) player.PlayerNumber = 2;
+        else player.PlayerNumber = 1;
         
+    }
+
+    public HoverController GetPlayer(int number)
+    {
+        return players[number];
     }
 
     public void PlayerDeath(HoverController player)

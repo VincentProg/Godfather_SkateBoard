@@ -8,33 +8,37 @@ using UnityEngine;
 public class HoverController : MonoBehaviour
 {
     PlayerInput myInputs;
-    Rigidbody rb;
+    public Rigidbody rb;
 
     [Header("Suspensions")]
     [Range(0.0f, 10f)]
     [SerializeField] private float multiplier = 2.5f;
     [SerializeField] private float maxHeight = 5f;
+    [SerializeField] private float minHeight = 1f;
     [SerializeField] private Transform[] anchors = new Transform[4];
     RaycastHit[] hits = new RaycastHit[4];
 
     [Header("----------------------------------------")]
     [Header("Forward")]
     [SerializeField] private float moveForce = 1000f;
-    [SerializeField] private float strengthImpulse = 40;
+    [SerializeField] private float strengthImpulse = 50;
 
     [Space(10)]
     [Header("Turn")]
-    [SerializeField] private float turnTorque = 40f;
-    [SerializeField] private float _sharpTurn = 100;
-    [SerializeField] private float _wideBend = 15;
+    [SerializeField] private float turnTorque = 100f;
+    [Range(0.4f, 10f)]
+    [SerializeField] private float _sharpTurn = 1f;
+    [Range(1f, 15f)]
+    [SerializeField] private float _wideBend = 8f;
     private float magnitude;
-    public float Magnitude { get { return magnitude; } }
+    float currentTorque;
 
     [Header("Speed")]
     [Tooltip("magnitude => [4 - 40]")]
     [SerializeField] private float playerMaxSpeed = 20;
 
     [SerializeField] private bool grounded;
+    public int PlayerNumber;
 
     private Vector2 movementInput;
 
@@ -43,12 +47,37 @@ public class HoverController : MonoBehaviour
     private bool canImpulse;
 
     private bool canReset;
+    private bool resetDeccel;
 
     private Vector2 Axis;
+    private Vector3 downDir;
+    [HideInInspector] public Vector3 DirectionCOl;
+
+    [HideInInspector] public HoverController player2;
+    [HideInInspector] public BoxCollider[] player2Collisions;
 
     private void Awake()
     {
-        MultiplayerManager.instance.AddPlayer(this);
+        //MultiplayerManager.instance.AddPlayer(this);
+    }
+    private void OnEnable()
+    {
+        try
+        {
+            if (PlayerNumber == 0)
+                MultiplayerManager.instance.GetPlayer(1).AddRefToPlayer();
+            else
+                MultiplayerManager.instance.GetPlayer(0).AddRefToPlayer();
+        }
+        catch { }
+    }
+    public void AddRefToPlayer()
+    {
+        if (PlayerNumber == 0)
+            player2 = MultiplayerManager.instance.GetPlayer(1);
+        else
+            player2 = MultiplayerManager.instance.GetPlayer(0);
+
     }
 
     void Start()
@@ -56,7 +85,10 @@ public class HoverController : MonoBehaviour
         myInputs = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody>();
         canImpulse = true;
-        _startRotation = new Quaternion(0,0,0,1);
+        _startRotation = new Quaternion(0, 0, 0, 1);
+        currentTorque = turnTorque;
+        downDir = -transform.parent.transform.up;
+        Debug.Log(downDir);
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -68,12 +100,23 @@ public class HoverController : MonoBehaviour
     {
         LimitRotation();
     }
-
+    float timeLeft;
     void FixedUpdate()
     {
         if (grounded)
+        {
             Axis = movementInput;
-        else Axis = Vector2.zero;
+            timeLeft = 3;
+            rb.AddForce(Axis.y * moveForce * Time.fixedDeltaTime * transform.forward, ForceMode.Impulse);
+        }
+        else
+        {
+            if(timeLeft > 0)
+            timeLeft -= Time.fixedDeltaTime;
+            else timeLeft = 0;
+            rb.AddForce(timeLeft * moveForce * Time.fixedDeltaTime * transform.forward, ForceMode.Impulse);
+
+        }
 
         for (int i = 0; i < 4; i++)
         {
@@ -81,18 +124,16 @@ public class HoverController : MonoBehaviour
         }
 
         TorqueSetting();
-
-        rb.AddForce(Axis.y * moveForce * transform.forward);
-        rb.AddTorque(Axis.x * turnTorque * transform.up);
+        
+        rb.AddTorque(Axis.x * turnTorque * Time.fixedDeltaTime * transform.up, ForceMode.Impulse);
 
         LimitMaxSpeed();
     }
-
+    float calculspeed;
     private void TorqueSetting()
     {
-        magnitude = Mathf.Clamp(rb.velocity.magnitude, 0.4f, 4);
-        turnTorque = Mathf.Clamp(turnTorque, _sharpTurn, _wideBend);
-        turnTorque /= magnitude;
+        magnitude = Mathf.Clamp(rb.velocity.magnitude, _sharpTurn, _wideBend);
+        turnTorque = Mathf.Lerp(turnTorque, currentTorque / magnitude, 2);
     }
 
     public void OnImpulse()
@@ -127,20 +168,24 @@ public class HoverController : MonoBehaviour
 
     private void ApplyForce(Transform anchor, RaycastHit hit)
     {
-        if (Physics.Raycast(anchor.position, -anchor.up, out hit, maxHeight))
+        if (Physics.Raycast(anchor.position, -anchor.up, out hit, minHeight))
         {
             Debug.DrawRay(anchor.position, -anchor.up * maxHeight, Color.green);
             grounded = true;
+        }
+        if (Physics.Raycast(anchor.position, -anchor.up, out hit, maxHeight))
+        {
             float force = 0;
             force = Mathf.Abs(1 / (hit.point.y - anchor.position.y));
             rb.AddForceAtPosition(transform.up * force * multiplier, anchor.position, ForceMode.Acceleration);
-        }else grounded = false;
+        }
+        else grounded = false;
     }
 
     IEnumerator Impulse()
     {
         canImpulse = false;
-        rb.AddForce(moveForce * transform.forward * strengthImpulse);
+        rb.AddForce(moveForce * Time.fixedDeltaTime * transform.forward * strengthImpulse, ForceMode.Impulse);
         yield return new WaitForSeconds(1);
         canImpulse = true;
     }
