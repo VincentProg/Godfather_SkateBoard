@@ -29,7 +29,7 @@ public class PlayerControllerV : MonoBehaviour
 
     private void Awake()
     {
-        MultiplayerManager.instance.AddPlayer(this);
+        //MultiplayerManager.instance.AddPlayer(this);
     }
 
     private void Start()
