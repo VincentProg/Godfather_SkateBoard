@@ -1,5 +1,5 @@
 {
-    "name": "MainMenuInputs",
+    "name": "ButtonsMenuInputs",
     "maps": [
         {
             "name": "MainMenuInputs",
@@ -27,6 +27,24 @@
                     "name": "Click",
                     "type": "Button",
                     "id": "f7c2476d-5c62-47b4-bded-b073c9f5d6a6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Up",
+                    "type": "Button",
+                    "id": "f4e5c015-c73f-49b6-b1f1-6bd5c5193227",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Down",
+                    "type": "Button",
+                    "id": "715a3a22-3221-4efe-a2f8-803f8e04f021",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -119,6 +137,72 @@
                     "processors": "",
                     "groups": "Controller",
                     "action": "Click",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a0fd1db1-18bb-47cc-8a58-6f4349cf4af2",
+                    "path": "<Keyboard>/w",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "74964c28-f8df-4c2a-924b-c4d6d663c7ca",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "90df5602-faf1-4427-a2e1-3fa4d072716b",
+                    "path": "<Gamepad>/dpad/up",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Up",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d58e62f8-b136-48d9-af36-ae6179defffa",
+                    "path": "<Keyboard>/s",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "58a4df76-01b6-4891-b2d2-5d316f19a795",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Down",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "700e4ab5-eb6b-45e1-aaf5-bfed1b4a8f3a",
+                    "path": "<Gamepad>/dpad/down",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Controller",
+                    "action": "Down",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

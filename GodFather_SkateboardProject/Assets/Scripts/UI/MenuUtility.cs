@@ -6,29 +6,31 @@ using UnityEngine.SceneManagement;
 
 public class MenuUtility : MonoBehaviour
 {
+    public static MenuUtility instance;
     [SerializeField]
     private bool canPause;
 
     [SerializeField]
     private GameObject PauseMenu;
 
-    private bool isPaused;
+    public bool IsPaused { get; private set; }
 
-    private void Update()
+    private void Awake()
     {
-
+        if (instance == null)
+            instance = this;
     }
+    
 
     public void SetPause()
     {
         if (!canPause) return;
-
-        isPaused = !isPaused;
-        PauseMenu.SetActive(isPaused);
-        if (isPaused)
-            Time.timeScale = 0;
-        else
-            Time.timeScale = 1;        
+        
+        IsPaused = !IsPaused;
+        print(IsPaused);
+        MultiplayerManager.instance.SetPause(IsPaused);
+        PauseMenu.SetActive(IsPaused);
+        Time.timeScale = IsPaused ? 0 : 1;
     }
 
     public void LaunchScene(int id)
