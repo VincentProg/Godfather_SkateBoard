@@ -5,16 +5,12 @@ using TMPro;
 
 public class UIPlayer : MonoBehaviour
 {
-
+    [SerializeField]
     private Rigidbody rb;
     [SerializeField]
     private TextMeshProUGUI text;
     [SerializeField]
     private float multiplier;
-    private void Start()
-    {
-        rb = transform.parent.GetComponentInChildren<Rigidbody>();
-    }
 
     private void Update()
     {

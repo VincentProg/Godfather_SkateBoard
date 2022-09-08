@@ -7,6 +7,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class HoverController : MonoBehaviour
 {
+    PlayerInput myInputs;
     Rigidbody rb;
 
     [Header("Suspensions")]
@@ -52,6 +53,7 @@ public class HoverController : MonoBehaviour
 
     void Start()
     {
+        myInputs = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody>();
         canImpulse = true;
         _startRotation = new Quaternion(0,0,0,1);
@@ -141,5 +143,40 @@ public class HoverController : MonoBehaviour
         rb.AddForce(moveForce * transform.forward * strengthImpulse);
         yield return new WaitForSeconds(1);
         canImpulse = true;
+    }
+
+    public void SetPause(InputAction.CallbackContext context)
+    {        
+        if(context.started)
+             MenuUtility.instance.SetPause();
+    }
+    public void SwitchInputs(bool switchToPause)
+    {
+        if (switchToPause)
+        {
+            print(myInputs);
+            myInputs.SwitchCurrentActionMap("PauseMenu");
+        } else
+        {
+            myInputs.SwitchCurrentActionMap("Gameplay");
+        }
+    }
+
+    public void Pause_BtnUp(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        Btn_Selector.instance.SelectButton0();
+    }
+
+    public void Pause_BtnDown(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        Btn_Selector.instance.SelectButton1();
+    }
+
+    public void Pause_Click(InputAction.CallbackContext context)
+    {
+        if(context.started)
+        Btn_Selector.instance.LaunchBtn();
     }
 }

@@ -22,6 +22,7 @@ public class UIButtons : MonoBehaviour
         t = GetComponent<RectTransform>();
         initialPos = t.position;
         t.localScale = initialScale;
+        OnUnselect();
     }
 
     public void OnSelect()

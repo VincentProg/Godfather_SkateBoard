@@ -6,28 +6,25 @@ using UnityEngine.EventSystems;
 
 public class Btn_Selector : MonoBehaviour
 {
-
+    public static Btn_Selector instance;
     [SerializeField]
     List<UIButtons> buttons = new List<UIButtons>();
 
     private UIButtons btnSelected;
 
-    private void Start()
+    private void Awake()
     {
-        for(int i = 0; i < buttons.Count; i++)
-        {
-            buttons[i].OnUnselect();
-        }
+        instance = this;
     }
 
-    public void PressLeft()
+    public void SelectButton0()
     {
         buttons[0].OnSelect();
         buttons[1].OnUnselect();
         btnSelected = buttons[0];
     }
 
-    public void PressRight()
+    public void SelectButton1()
     {
         buttons[1].OnSelect();
         buttons[0].OnUnselect();
@@ -36,6 +33,12 @@ public class Btn_Selector : MonoBehaviour
 
     public void LaunchBtn()
     {
-        btnSelected.GetComponent<Button>().onClick.Invoke();
+        if (btnSelected != null)
+        {
+            print(btnSelected.gameObject.name);
+            btnSelected.GetComponent<Button>().onClick.Invoke();
+        }
+
+
     }
 }
