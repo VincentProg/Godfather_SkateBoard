@@ -8,7 +8,7 @@ using UnityEngine;
 public class HoverController : MonoBehaviour
 {
     PlayerInput myInputs;
-    Rigidbody rb;
+    public Rigidbody rb;
 
     [Header("Suspensions")]
     [Range(0.0f, 10f)]
