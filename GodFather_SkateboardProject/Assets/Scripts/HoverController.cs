@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
 [SelectionBase]
@@ -43,10 +44,10 @@ public class HoverController : MonoBehaviour
 
     private Vector2 Axis;
 
-    //private void Awake()
-    //{
-    //    MultiplayerManager.instance.AddPlayer(this);
-    //}
+    private void Awake()
+    {
+        MultiplayerManager.instance.AddPlayer(this);
+    }
 
     void Start()
     {
@@ -55,16 +56,20 @@ public class HoverController : MonoBehaviour
         _startRotation = new Quaternion(0,0,0,1);
     }
 
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        movementInput = context.ReadValue<Vector2>();
+    }
+
     private void Update()
     {
-        if (Input.GetButtonDown("Jump")) OnImpulse();
         LimitRotation();
     }
 
     void FixedUpdate()
     {
         if (grounded)
-            Axis = new Vector2(Input.GetAxis("Horizontal"), Mathf.Abs(Input.GetAxis("Vertical")));
+            Axis = movementInput;
         else Axis = Vector2.zero;
 
         for (int i = 0; i < 4; i++)

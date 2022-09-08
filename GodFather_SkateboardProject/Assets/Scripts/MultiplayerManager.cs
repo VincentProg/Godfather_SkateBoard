@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class MultiplayerManager : MonoBehaviour
 {
     public static MultiplayerManager instance;
-    private PlayerControllerV[] players = new PlayerControllerV[2];
+    private HoverController[] players = new HoverController[2];
 
     [SerializeField]
     private LayerMask[] masks = new LayerMask[2];
@@ -23,7 +23,7 @@ public class MultiplayerManager : MonoBehaviour
         else Destroy(gameObject);
 
     }
-    public void AddPlayer(PlayerControllerV player)
+    public void AddPlayer(HoverController player)
     {
         if (players[1] != null) return;
 
@@ -42,7 +42,7 @@ public class MultiplayerManager : MonoBehaviour
         PlayerSpawn(player);
     }
 
-    private void PlayerSpawn(PlayerControllerV player)
+    private void PlayerSpawn(HoverController player)
     {
         player.gameObject.layer = (players[1] != null) ? 8 : 7;
         player.transform.parent.Find("Vcam").gameObject.layer = (players[1] != null) ? 8 : 7;
@@ -50,8 +50,8 @@ public class MultiplayerManager : MonoBehaviour
         
     }
 
-    public void PlayerDeath(PlayerControllerV player)
+    public void PlayerDeath(HoverController player)
     {
-
+        //Spawner (Respawn)
     }
 }
