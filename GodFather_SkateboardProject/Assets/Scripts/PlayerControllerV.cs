@@ -68,5 +68,13 @@ public class PlayerControllerV : MonoBehaviour
         yield return new WaitForSeconds(1);
         canImpulse = true;
     }
+    public void Pause_btnUp()
+    {
+        Btn_Selector.instance.SelectButton0();
+    }
+    public void Pause_btnDown()
+    {
+        Btn_Selector.instance.SelectButton1();
+    }
 }
 

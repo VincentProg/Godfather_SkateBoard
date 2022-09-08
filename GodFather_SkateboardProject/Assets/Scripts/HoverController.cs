@@ -7,7 +7,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class HoverController : MonoBehaviour
 {
+    //tesst
     [HideInInspector] public Rigidbody rb;
+
+    PlayerInput myInputs;
 
     [Header("Suspensions")]
     [Range(0.0f, 10f)]
@@ -25,10 +28,10 @@ public class HoverController : MonoBehaviour
     [Space(10)]
     [Header("Turn")]
     [SerializeField] private float turnTorque = 100f;
-    [Range(0.4f, 10f)]
-    [SerializeField] private float _sharpTurn = 1f;
-    [Range(1f, 15f)]
-    [SerializeField] private float _wideBend = 8f;
+    [Range(0.1f, 2f)]
+    [SerializeField] private float _sharpTurn = 0.5f;
+    [Range(0.1f, 2f)]
+    [SerializeField] private float _wideBend = 0.5f;
     private float magnitude;
     float currentTorque;
 
@@ -89,6 +92,8 @@ public class HoverController : MonoBehaviour
         _startRotation = new Quaternion(0, 0, 0, 1);
         currentTorque = turnTorque;
         downDir = -transform.parent.transform.up;
+        myInputs = GetComponent<PlayerInput>();
+        MultiplayerManager.instance.AddPlayer(this);
         Debug.Log(downDir);
     }
 
@@ -132,8 +137,9 @@ public class HoverController : MonoBehaviour
     float calculspeed;
     private void TorqueSetting()
     {
-        magnitude = Mathf.Clamp(rb.velocity.magnitude, _sharpTurn, _wideBend);
-        turnTorque = Mathf.Lerp(turnTorque, currentTorque / magnitude, 2);
+        magnitude = Mathf.Clamp(rb.velocity.sqrMagnitude, _sharpTurn, _wideBend);
+        //Debug.Log(rb.velocity.magnitude + " && " + rb.velocity.sqrMagnitude);
+        turnTorque = Mathf.Lerp(turnTorque, currentTorque/magnitude, 2);
     }
 
     public void OnImpulse()
@@ -190,4 +196,43 @@ public class HoverController : MonoBehaviour
         yield return new WaitForSeconds(1);
         canImpulse = true;
     }
+    public void SetPause(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            MenuUtility.instance.SetPause();
+    }
+    public void SwitchInputs(bool switchToPause)
+    {
+        if (switchToPause)
+        {
+            print(myInputs);
+            myInputs.SwitchCurrentActionMap("PauseMenu");
+        }
+        else
+        {
+            myInputs.SwitchCurrentActionMap("Gameplay");
+        }
+    }
+
+    public void Pause_BtnUp(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            print("button up");
+            Btn_Selector.instance.SelectButton0();
+        }
+    }
+
+    public void Pause_BtnDown(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            Btn_Selector.instance.SelectButton1();
+    }
+
+    public void Pause_Click(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            Btn_Selector.instance.LaunchBtn();
+    }
 }
+

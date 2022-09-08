@@ -45,7 +45,7 @@ public class MultiplayerManager : MonoBehaviour
     private void PlayerSpawn(HoverController player)
     {
         player.gameObject.layer = (players[1] != null) ? 8 : 7;
-        player.transform.parent.Find("Vcam").gameObject.layer = (players[1] != null) ? 8 : 7;
+        player.transform.Find("Vcam").gameObject.layer = (players[1] != null) ? 8 : 7;
         player.transform.parent.GetComponentInChildren<Camera>().cullingMask = (players[1] != null) ? masks[1] : masks[0];
         if (players[1] != null) player.PlayerNumber = 2;
         else player.PlayerNumber = 1;
@@ -60,5 +60,18 @@ public class MultiplayerManager : MonoBehaviour
     public void PlayerDeath(HoverController player)
     {
         //Spawner (Respawn)
+    }
+
+    public void SetPause( bool activatePause)
+    {       
+        foreach(HoverController player in players)
+        {
+
+            if (player != null)
+            {
+                print("multimanager");
+                player.SwitchInputs(activatePause);
+            }
+        }
     }
 }
