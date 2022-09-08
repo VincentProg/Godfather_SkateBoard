@@ -8,9 +8,7 @@ public class PlayerControllerV : MonoBehaviour
 {
     [SerializeField]
     private float playerMaxSpeed;
-    [SerializeField]
-    private float gravityValue = -9.81f;
-
+    
     private Vector3 playerVelocity;
     private bool groundedPlayer;
 
@@ -47,7 +45,7 @@ public class PlayerControllerV : MonoBehaviour
 
     public void OnImpulse()
     {
-        print("impulse");
+        //print("impulse");
         if (canImpulse)
             StartCoroutine(Impulse()) ;
     }
