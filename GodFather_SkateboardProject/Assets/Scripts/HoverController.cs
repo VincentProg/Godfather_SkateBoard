@@ -73,7 +73,10 @@ public class HoverController : MonoBehaviour
     public void AddRefToPlayer()
     {
         if (PlayerNumber == 0)
+        {
             player2 = MultiplayerManager.instance.GetPlayer(1);
+            player2.AddRefToPlayer();
+        }
         else
             player2 = MultiplayerManager.instance.GetPlayer(0);
 
@@ -178,6 +181,7 @@ public class HoverController : MonoBehaviour
         }
         else grounded = false;
     }
+
 
     IEnumerator Impulse()
     {
