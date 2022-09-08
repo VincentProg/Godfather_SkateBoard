@@ -10,6 +10,8 @@ public class HoverController : MonoBehaviour
     //tesst
     [HideInInspector] public Rigidbody rb;
 
+    PlayerInput myInputs;
+
     [Header("Suspensions")]
     [Range(0.0f, 10f)]
     [SerializeField] private float multiplier = 2.5f;
@@ -87,6 +89,7 @@ public class HoverController : MonoBehaviour
         _startRotation = new Quaternion(0, 0, 0, 1);
         currentTorque = turnTorque;
         downDir = -transform.parent.transform.up;
+        myInputs = GetComponent<PlayerInput>();
         Debug.Log(downDir);
     }
 
@@ -187,4 +190,43 @@ public class HoverController : MonoBehaviour
         yield return new WaitForSeconds(1);
         canImpulse = true;
     }
+    public void SetPause(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            MenuUtility.instance.SetPause();
+    }
+    public void SwitchInputs(bool switchToPause)
+    {
+        if (switchToPause)
+        {
+            print(myInputs);
+            myInputs.SwitchCurrentActionMap("PauseMenu");
+        }
+        else
+        {
+            myInputs.SwitchCurrentActionMap("Gameplay");
+        }
+    }
+
+    public void Pause_BtnUp(InputAction.CallbackContext context)
+    {
+        if (context.started)
+        {
+            print("button up");
+            Btn_Selector.instance.SelectButton0();
+        }
+    }
+
+    public void Pause_BtnDown(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            Btn_Selector.instance.SelectButton1();
+    }
+
+    public void Pause_Click(InputAction.CallbackContext context)
+    {
+        if (context.started)
+            Btn_Selector.instance.LaunchBtn();
+    }
 }
+
