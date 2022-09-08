@@ -7,8 +7,10 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class HoverController : MonoBehaviour
 {
+    //tesst
+    [HideInInspector] public Rigidbody rb;
+
     PlayerInput myInputs;
-    public Rigidbody rb;
 
     [Header("Suspensions")]
     [Range(0.0f, 10f)]
@@ -82,12 +84,12 @@ public class HoverController : MonoBehaviour
 
     void Start()
     {
-        myInputs = GetComponent<PlayerInput>();
         rb = GetComponent<Rigidbody>();
         canImpulse = true;
         _startRotation = new Quaternion(0, 0, 0, 1);
         currentTorque = turnTorque;
         downDir = -transform.parent.transform.up;
+        myInputs = GetComponent<PlayerInput>();
         Debug.Log(downDir);
     }
 
@@ -126,7 +128,6 @@ public class HoverController : MonoBehaviour
         TorqueSetting();
         
         rb.AddTorque(Axis.x * turnTorque * Time.fixedDeltaTime * transform.up, ForceMode.Impulse);
-
         LimitMaxSpeed();
     }
     float calculspeed;
@@ -150,7 +151,7 @@ public class HoverController : MonoBehaviour
     private void LimitRotation()
     {
         //Si le skate se retourne
-        if (Mathf.Abs(transform.position.z) >= 90f || Mathf.Abs(transform.position.x) >= 110f) { WaitToReset(); }
+        if (Mathf.Abs(transform.position.z) >= 90f || Mathf.Abs(transform.position.x) >= 110f) { ResetRotation(); }
         if (Input.GetKeyDown(KeyCode.R)) ResetRotation();
     }
     private void WaitToReset()
@@ -189,11 +190,10 @@ public class HoverController : MonoBehaviour
         yield return new WaitForSeconds(1);
         canImpulse = true;
     }
-
     public void SetPause(InputAction.CallbackContext context)
-    {        
-        if(context.started)
-             MenuUtility.instance.SetPause();
+    {
+        if (context.started)
+            MenuUtility.instance.SetPause();
     }
     public void SwitchInputs(bool switchToPause)
     {
@@ -201,7 +201,8 @@ public class HoverController : MonoBehaviour
         {
             print(myInputs);
             myInputs.SwitchCurrentActionMap("PauseMenu");
-        } else
+        }
+        else
         {
             myInputs.SwitchCurrentActionMap("Gameplay");
         }
@@ -218,13 +219,14 @@ public class HoverController : MonoBehaviour
 
     public void Pause_BtnDown(InputAction.CallbackContext context)
     {
-        if(context.started)
-        Btn_Selector.instance.SelectButton1();
+        if (context.started)
+            Btn_Selector.instance.SelectButton1();
     }
 
     public void Pause_Click(InputAction.CallbackContext context)
     {
-        if(context.started)
-        Btn_Selector.instance.LaunchBtn();
+        if (context.started)
+            Btn_Selector.instance.LaunchBtn();
     }
 }
+
