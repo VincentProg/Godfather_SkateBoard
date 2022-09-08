@@ -20,8 +20,9 @@ public class PlayerCol : MonoBehaviour
     Rigidbody otherRb;
 
     [Range(0f, 200f)] public float Force_To_OP = 100;
-    [Range(0f, 200f)] public float Force_WallBounce = 100;
-    [Range(.3f, 1.5f)] public float min_Speed_To_Bounce;
+    [Range(0f, 200f)] public float Wallbounce_OnHit = 100;
+    [Range(0f, 200f)] public float Wallbounce_unpressed = 100;
+    [Range(.1f, 1.5f)] public float min_Speed_To_Bounce;
     bool dontbounce = false;
     bool hitIt = false;
 
@@ -32,8 +33,8 @@ public class PlayerCol : MonoBehaviour
 
         rb = GetComponent<Rigidbody>();
         otherRb = OtherPlayer.GetComponent<Rigidbody>();
-        controller = transform.parent.GetComponent<HoverController>();
-        controllerStats = transform.parent.GetComponent<CharStats>();
+        controller = GetComponent<HoverController>();
+        controllerStats = GetComponent<CharStats>();
 
     }
     public void OnMove(InputAction.CallbackContext context)
@@ -63,25 +64,31 @@ public class PlayerCol : MonoBehaviour
     {
         print(rb.velocity.magnitude);
         
-        if (col.gameObject.CompareTag("Wall") && !dontbounce && rb.velocity.magnitude >= min_Speed_To_Bounce && hitIt)
+        if (col.gameObject.CompareTag("Wall") && !dontbounce && rb.velocity.magnitude >= min_Speed_To_Bounce)
         {
             Vector3 Newdir = Vector3.Reflect(_Velgo, col.contacts[0].normal);
-            Reflect(Newdir);
+            if (hitIt)
+            {
+                Reflect(Newdir, Wallbounce_OnHit);
+            }else
+            {
+                Reflect(Newdir, Wallbounce_unpressed);
 
-            /*Vector3 Newdir = Vector3.Reflect(_Velgo, col.contacts[0].normal);
-            rb.velocity = Vector3.zero;
-            rb.AddForce(Newdir * (Force_WallBounce / 100), ForceMode.VelocityChange);
-            //rb.AddTorque(180 * Time.fixedDeltaTime * transform.up, ForceMode.Impulse);
-            transform.rotation = Quaternion.LookRotation(Newdir, Vector3.up);
-            //transform.eulerAngles += new Vector3(0, -90, 0);*/
+            }
         }
     }
 
-    void Reflect(Vector3 dir)
+    void Reflect(Vector3 dir, float _percent)
     {
+        if (hitIt)
+        {
+            Debug.Log("HIIIIIIIIIIIIIIIIT");
+        }
+        print(rb.velocity);
         rb.velocity = Vector3.zero;
-        rb.AddForce(dir * (Force_WallBounce / 100), ForceMode.VelocityChange);
+        rb.AddForce(dir * (_percent/100), ForceMode.VelocityChange);
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+        print(rb.velocity);
     }
     void EjectOP()
     {
@@ -89,7 +96,7 @@ public class PlayerCol : MonoBehaviour
         otherRb.AddForce(rb.velocity * (Force_To_OP / 100), ForceMode.VelocityChange);
         rb.velocity = (rb.velocity - rb.velocity*.7f);
     }
-    // Update is called once per frame
+
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.A))
@@ -104,7 +111,7 @@ public class PlayerCol : MonoBehaviour
     IEnumerator Cd_to_bounce()
     {
         hitIt = true;
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(.5f);
         hitIt = false;
     }
 }
