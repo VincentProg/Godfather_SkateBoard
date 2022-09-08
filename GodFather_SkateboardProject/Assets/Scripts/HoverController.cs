@@ -27,6 +27,7 @@ public class HoverController : MonoBehaviour
     [SerializeField] private float _sharpTurn = 100;
     [SerializeField] private float _wideBend = 15;
     private float magnitude;
+    public float Magnitude { get { return magnitude; } }
 
     [Header("Speed")]
     [Tooltip("magnitude => [4 - 40]")]
