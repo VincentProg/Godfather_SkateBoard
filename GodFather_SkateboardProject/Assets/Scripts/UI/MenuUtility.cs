@@ -20,7 +20,12 @@ public class MenuUtility : MonoBehaviour
         if (instance == null)
             instance = this;
     }
-    
+
+    private void Start()
+    {
+        Time.timeScale = 1;
+    }
+
 
     public void SetPause()
     {

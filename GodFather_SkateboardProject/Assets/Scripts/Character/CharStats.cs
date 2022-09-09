@@ -1,95 +1,49 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharStats : MonoBehaviour
 {
     //public bool Debugmod;
 
-    //[Range(0f,200f)]public int gaindspeed = 100;
-    public float Health = 50f;
+    public float Health = 100f;
     public float base_Damage = 10;
 
-    //GameObject _parentGO;
-    //Rigidbody _parentRB;
+    public Image _myLifeBar;
+    private Animator anim;
+    HoverController player;
 
-    //Rigidbody _parentRbP2;
-
-    //public GameObject _hitboxP2;
-    //public GameObject _hurtboxP2;
-    //CharStats Enemy_stats;
-
-    //Vector3 _dirToP1;
-    //Vector3 _velGo;
     void Start()
     {
-        //Enemy_stats = _hitboxP2.GetComponent<CharStats>();
-        //_parentGO = transform.parent.gameObject;
-        //_parentRB = _parentGO.GetComponent<Rigidbody>();
+        player = GetComponent<HoverController>();
+    }
+    public void TakeDamage(float damage, float Vel)
+    {
+        float Totdamage = damage * Vel;
+        Health -= Totdamage;
+        print("Hit : " + _myLifeBar.transform.parent.name + ", Taken : " + Totdamage + ", Now at : " + Health + "%");
+        player.playDamagesAnim(Health);
 
-        //_parentRbP2 = _hitboxP2.transform.parent.gameObject.GetComponent<Rigidbody>();
+
+        
+    }
+    public void AddHealth(float heatlh)
+    {
+        Health += heatlh;
+        if(Health >= 100) { Health = 100; }
+        print("Hit : " + _myLifeBar.transform.parent.name + ", Add : " + heatlh + ", Now at : " + Health + "%");
 
     }
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    if (other.name == "HurtBox")
-    //    {
-    //        DamageP2(base_Damage);
-    //        EjectP2();
-    //    }
-        
-    //}
-    //private void OnCollisionEnter(Collision collision)
-    //{
-    //    if (collision.gameObject.name == "HitBox")
-    //    {
-    //        EjectP2();
-    //    }
-    //    if (collision.gameObject.CompareTag("Wall"))
-    //    {
-    //        print(collision.contacts[0].normal);
-    //        Vector3 Newdir = Vector3.Reflect(_velGo, collision.contacts[0].normal);
-    //        _parentRB.velocity = Vector3.zero;
-    //        _parentRB.AddForce(Newdir * (gaindspeed / 100f), ForceMode.Impulse);
+    public void SetHealth(float heatlh)
+    {
+        if (heatlh >= 100) { heatlh = 100; }
+        Health = heatlh;
+        print("Set : " + _myLifeBar.transform.parent.name + ", Now at : " + Health + "%");
 
-    //        _parentGO.transform.rotation = Quaternion.LookRotation(Newdir, Vector3.up);
-    //        _parentGO.transform.eulerAngles += new Vector3(0, -90, 0);
-    //        print(_parentRB);
-    //        EjectMe();
-    //    }
-    //}
-    //void DamageP2(float damage)
-    //{
-    //    Enemy_stats.Health -= damage;
-    //    print("Lost " + damage + " HP now : " + Enemy_stats.Health);
-    //}
-    //void EjectP2()
-    //{
-    //    _parentRB.velocity = Vector3.zero;
-    //    _parentRbP2.AddForce(-_dirToP1 * 20f, ForceMode.Impulse);
-    //    print("Bump to " + -_dirToP1);
-        
-    //} 
-    //void EjectMe()
-    //{
-    //    //_parentRB.AddForce();
-    //    print("BumpMe");
-    //}
-
-    //// Update is called once per frame
-    //void Update()
-    //{
-        
-
-    //    Debug.DrawRay(transform.position, _velGo);
-    //    _dirToP1 = transform.position - _hurtboxP2.transform.position + new Vector3(0, -0f,0);
-    //    _velGo = _parentRB.velocity;
-
-    //    if (Debugmod)
-    //    {
-    //        Debug.DrawLine(transform.position, _hurtboxP2.transform.position);
-    //        /*print(_dirToP1);*/
-    //    }
-    //}
-
+    }
+    private void Update()
+    {
+        _myLifeBar.fillAmount = Health/100f;
+    }
 }
