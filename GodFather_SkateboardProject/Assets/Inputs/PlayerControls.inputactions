@@ -33,7 +33,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action",
+                    "name": "Bounce",
                     "type": "Button",
                     "id": "8e1b9a87-4776-4f9e-bd3a-ba56c6a780ed",
                     "expectedControlType": "Button",
@@ -200,11 +200,22 @@
                 {
                     "name": "",
                     "id": "9666cd2b-9113-4d71-a58c-96c52904293c",
-                    "path": "",
+                    "path": "<XInputController>/buttonEast",
                     "interactions": "",
                     "processors": "",
-                    "groups": "",
-                    "action": "New action",
+                    "groups": "Controller",
+                    "action": "Bounce",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dfc30a8a-6c0a-4d66-989e-cdc94193b7d7",
+                    "path": "<Keyboard>/q",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard",
+                    "action": "Bounce",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
