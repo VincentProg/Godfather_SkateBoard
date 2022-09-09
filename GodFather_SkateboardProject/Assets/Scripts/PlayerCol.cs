@@ -120,11 +120,7 @@ public class PlayerCol : MonoBehaviour
 
         }
 
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            StopCoroutine(Cd_to_bounce());
-            StartCoroutine(Cd_to_bounce());
-        }
+
         if (Input.GetKeyDown(KeyCode.O))
         {
             charStats.AddHealth(100);
@@ -132,7 +128,11 @@ public class PlayerCol : MonoBehaviour
         _Velgo = rb.velocity;//NE PAS ENLEVER A GARDER !!!
         Debug.DrawRay(transform.position, rb.velocity);
     }
-
+    public void Bounce()
+    {
+        StopCoroutine(Cd_to_bounce());
+        StartCoroutine(Cd_to_bounce());
+    }
     IEnumerator CDrest()
     {
         cdrest = true;
