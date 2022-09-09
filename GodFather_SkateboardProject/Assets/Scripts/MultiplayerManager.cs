@@ -13,6 +13,7 @@ public class MultiplayerManager : MonoBehaviour
 
     [SerializeField]
     private GameObject canvasSplitScreen;
+    public bool isSplit;
 
     [SerializeField]
     GameObject initialCam;
@@ -33,9 +34,13 @@ public class MultiplayerManager : MonoBehaviour
     {
         if (players[1] != null) return;
 
-        if(players[0] == null)
+        isSplit = false;
+
+
+        if (players[0] == null)
         {
             players[0] = player;
+            GameManager.instance.m_Players.Add(player);
             initialCam.SetActive(false);
         } else
         {
@@ -49,6 +54,9 @@ public class MultiplayerManager : MonoBehaviour
             players[1].GetComponentInChildren<SkinnedMeshRenderer>().material = matPlayer2;
 
             canvasSplitScreen.SetActive(true);
+            GameManager.instance.m_Players.Add(player);
+
+            isSplit = true;
         }
 
         PlayerSpawn(player);

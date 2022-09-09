@@ -21,7 +21,7 @@ public class CharStats : MonoBehaviour
     {
         float Totdamage = damage * Vel;
         Health -= Totdamage;
-        if(Health < 0)
+        if(Health <= 0)
         {
             player._healthState = HoverController.HealthState.Dead;
         }

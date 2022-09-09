@@ -13,6 +13,8 @@ public class HoverController : MonoBehaviour
 
     PlayerInput myInputs;
 
+    [HideInInspector] public int Number;
+
     [Header("Suspensions")]
     [Range(0.0f, 10f)]
     [SerializeField] private float multiplier = 2.5f;
@@ -148,7 +150,9 @@ public class HoverController : MonoBehaviour
     private void TorqueSetting()
     {
         magnitude = Mathf.Clamp(rb.velocity.sqrMagnitude, _sharpTurn, _wideBend);
+        if (magnitude < _sharpTurn + 0.1f) magnitude = _sharpTurn;
         turnTorque = Mathf.Lerp(turnTorque, currentTorque / magnitude, 2);
+
     }
 
     public void OnImpulse()
@@ -202,6 +206,12 @@ public class HoverController : MonoBehaviour
     {
         moveForce = 0f;
         turnTorque = 0;
+    }
+
+    public void Respawn(Vector3 pos)
+    {
+        //transform.position = pos;
+        GetComponent<CharStats>().SetHealth(100);
     }
     
     public void SetPause(InputAction.CallbackContext context)

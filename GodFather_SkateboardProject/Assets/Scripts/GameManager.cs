@@ -5,13 +5,18 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+
+    bool isSplit;
     public int m_NumRoundsToWin = 5;            // The number of rounds a single player has to win to win the game.
     public float m_StartDelay = 3f;             // The delay between the start of RoundStarting and RoundPlaying phases.
     public float m_EndDelay = 3f;               // The delay between the end of RoundPlaying and RoundEnding phases.
     //public CameraControl m_CameraControl;       // Reference to the CameraControl script for control during different phases.
-    public Text m_MessageText;                  // Reference to the overlay Text to display winning text, etc.
+    public Text m_MessageText;                 // Reference to the overlay Text to display winning text, etc.
+    public Text m_MessageTextSplit1;                 // Reference to the overlay Text to display winning text, etc.
+    public Text m_MessageTextSplit2;                 // Reference to the overlay Text to display winning text, etc.
     public GameObject m_PlayerPrefab;             // Reference to the prefab the players will control.
-    public HoverController[] m_Players;               // A collection of managers for enabling and disabling different aspects of the tanks.
+    public List<HoverController> m_Players;               // A collection of managers for enabling and disabling different aspects of the tanks.
 
 
     private int m_RoundNumber;                  // Which round the game is currently on.
@@ -19,8 +24,22 @@ public class GameManager : MonoBehaviour
     private WaitForSeconds m_EndWait;           // Used to have a delay whilst the round or game ends.
     private HoverController m_RoundWinner;          // Reference to the winner of the current round.  Used to make an announcement of who won.
     private HoverController m_GameWinner;           // Reference to the winner of the game.  Used to make an announcement of who won.
+    
+    bool AllPlayersInScene = false;
+    public GameObject[] spawners;
 
+    public GameObject WinScreenP1;
+    public GameObject WinScreenP2;
 
+    public void Awake()
+    {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else Destroy(gameObject);
+
+    }
     private void Start()
     {
         // Create the delays so they only have to be made once.
@@ -65,12 +84,12 @@ public class GameManager : MonoBehaviour
         //m_CameraControl.m_Targets = targets;
     }
 
-    bool AllPlayersInScene = false;
     // This is called from start and will run each phase of the game one after another.
     private IEnumerator GameLoop()
     {
         if (MultiplayerManager.instance.players[1] != null)
         {
+            isSplit = MultiplayerManager.instance.isSplit;
             if (!AllPlayersInScene)
             {
                 AllPlayersInScene = true;
@@ -89,7 +108,15 @@ public class GameManager : MonoBehaviour
             {
                 // If there is a game winner, restart the level.
                 //Application.LoadLevel(Application.loadedLevel);
-                m_MessageText.text = "End";
+                if (m_GameWinner.Number == 0)
+                {
+                    WinScreenP1.SetActive(true);
+                }
+                else
+                {
+                    WinScreenP2.SetActive(true);
+                }
+
             }
             else
             {
@@ -109,7 +136,6 @@ public class GameManager : MonoBehaviour
 
     }
 
-    public Spawner spawner;
     private IEnumerator RoundStarting()
     {
         // As soon as the round starts reset the tanks and make sure they can't move.
@@ -121,7 +147,14 @@ public class GameManager : MonoBehaviour
 
         // Increment the round number and display text showing the players what round it is.
         m_RoundNumber++;
-        m_MessageText.text = "ROUND " + m_RoundNumber;
+        if (!isSplit)
+            m_MessageText.text = "ROUND " + m_RoundNumber;
+        else
+        {
+            m_MessageTextSplit1.text = "ROUND " + m_RoundNumber;
+            m_MessageTextSplit2.text = "ROUND " + m_RoundNumber;
+        }
+        
 
         // Wait for the specified length of time until yielding control back to the game loop.
         yield return m_StartWait;
@@ -134,7 +167,13 @@ public class GameManager : MonoBehaviour
         EnablePlayersControl();
 
         // Clear the text from the screen.
-        m_MessageText.text = string.Empty;
+        if (!isSplit)
+            m_MessageText.text = string.Empty;
+        else
+        {
+            m_MessageTextSplit1.text = string.Empty;
+            m_MessageTextSplit2.text = string.Empty;
+        }
 
         // While there is not one tank left...
         while (!OnePlayerLeft())
@@ -165,7 +204,13 @@ public class GameManager : MonoBehaviour
 
         // Get a message based on the scores and whether or not there is a game winner and display it.
         string message = EndMessage();
-        m_MessageText.text = message;
+        if (!isSplit)
+            m_MessageText.text = message;
+        else
+        {
+            m_MessageTextSplit1.text = message;
+            m_MessageTextSplit2.text = message;
+        }
 
         // Wait for the specified length of time until yielding control back to the game loop.
         yield return m_EndWait;
@@ -179,7 +224,7 @@ public class GameManager : MonoBehaviour
         int numPlayersLeft = 0;
 
         // Go through all the tanks...
-        for (int i = 0; i < MultiplayerManager.instance.players.Length; i++)
+        for (int i = 0; i < m_Players.Count; i++)
         {
             // ... and if they are active, increment the counter.
             if (MultiplayerManager.instance.players[i]._healthState == HoverController.HealthState.Alive)
@@ -196,7 +241,7 @@ public class GameManager : MonoBehaviour
     private HoverController GetRoundWinner()
     {
         // Go through all the tanks...
-        for (int i = 0; i < m_Players.Length; i++)
+        for (int i = 0; i < m_Players.Count; i++)
         {
             // ... and if one of them is active, it is the winner so return it.
             if (m_Players[i]._healthState == HoverController.HealthState.Dead)
@@ -212,10 +257,10 @@ public class GameManager : MonoBehaviour
     private HoverController GetGameWinner()
     {
         // Go through all the tanks...
-        for (int i = 0; i < m_Players.Length; i++)
+        for (int i = 0; i < m_Players.Count; i++)
         {
             // ... and if one of them has enough rounds to win the game, return it.
-            if (m_Players[i].m_Wins == m_NumRoundsToWin)
+            if (m_Players[i].m_Wins >= m_NumRoundsToWin)
                 return m_Players[i];
         }
 
@@ -232,20 +277,20 @@ public class GameManager : MonoBehaviour
 
         // If there is a winner then change the message to reflect that.
         if (m_RoundWinner != null)
-            message = m_RoundWinner.m_ColoredPlayerText + " WINS THE ROUND!";
+            message = m_RoundWinner.name + " " + (m_RoundWinner.Number+1) + " WINS THE ROUND!";
 
         // Add some line breaks after the initial message.
         message += "\n\n\n\n";
 
         // Go through all the tanks and add each of their scores to the message.
-        for (int i = 0; i < m_Players.Length; i++)
+        for (int i = 0; i < m_Players.Count; i++)
         {
             message += m_Players[i].m_ColoredPlayerText + ": " + m_Players[i].m_Wins + " WINS\n";
         }
 
         // If there is a game winner, change the entire message to reflect that.
         if (m_GameWinner != null)
-            message = m_GameWinner.m_ColoredPlayerText + " WINS THE GAME!";
+            message = m_GameWinner.name + " " + (m_GameWinner.Number+1) + " WINS THE GAME!";
 
         return message;
     }
@@ -254,18 +299,17 @@ public class GameManager : MonoBehaviour
     // This function is used to turn all the tanks back on and reset their positions and properties.
     private void ResetAllPlayers()
     {
-        for (int i = 0; i < m_Players.Length; i++)
+        for (int i = 0; i < m_Players.Count; i++)
         {
             m_Players[i]._healthState = HoverController.HealthState.Respawn;
-            spawner.SpawnAtPosition(Vector3.zero, m_Players[i]);
-            m_Players[i].GetComponent<CharStats>().SetHealth(100);
+            m_Players[i].Respawn(spawners[i].transform.position);
         }
     }
 
 
     private void EnablePlayersControl()
     {
-        for (int i = 0; i < m_Players.Length; i++)
+        for (int i = 0; i < m_Players.Count; i++)
         {
             m_Players[i].EnableControl();
         }
@@ -274,7 +318,7 @@ public class GameManager : MonoBehaviour
 
     private void DisablelayersControl()
     {
-        for (int i = 0; i < m_Players.Length; i++)
+        for (int i = 0; i < m_Players.Count; i++)
         {
             m_Players[i].DisableControl();
         }
