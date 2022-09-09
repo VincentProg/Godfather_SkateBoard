@@ -14,6 +14,12 @@ public class MultiplayerManager : MonoBehaviour
     [SerializeField]
     private GameObject canvasSplitScreen;
 
+    [SerializeField]
+    GameObject initialCam;
+
+    [SerializeField]
+    private Material matPlayer2;
+
     public void Awake()
     {
         if (instance == null)
@@ -30,6 +36,7 @@ public class MultiplayerManager : MonoBehaviour
         if(players[0] == null)
         {
             players[0] = player;
+            initialCam.SetActive(false);
         } else
         {
             players[1] = player;
@@ -38,6 +45,8 @@ public class MultiplayerManager : MonoBehaviour
 
             players[0].GetComponent<PlayerCol>().GetOtherPlayer(players[1].gameObject);
             players[1].GetComponent<PlayerCol>().GetOtherPlayer(players[0].gameObject);
+
+            players[1].GetComponentInChildren<SkinnedMeshRenderer>().material = matPlayer2;
 
             canvasSplitScreen.SetActive(true);
         }
