@@ -351,7 +351,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &146140503
 Transform:
   m_ObjectHideFlags: 0
@@ -826,7 +826,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 190602064}
   m_LocalRotation: {x: 0.1557255, y: -0, z: -0, w: 0.98780036}
-  m_LocalPosition: {x: -2.3668306, y: 1.97, z: -1.42}
+  m_LocalPosition: {x: -6.0468307, y: 1.97, z: 0.5}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1228,6 +1228,9 @@ MonoBehaviour:
   grounded: 0
   PlayerNumber: 0
   DirectionCOl: {x: 0, y: 0, z: 0}
+  m_Wins: 0
+  m_ColoredPlayerText: {r: 0, g: 0, b: 0, a: 0}
+  _healthState: 0
   player2: {fileID: 0}
   player2Collisions: []
   camRef: {fileID: 1825423651}
@@ -3551,6 +3554,9 @@ MonoBehaviour:
   grounded: 0
   PlayerNumber: 0
   DirectionCOl: {x: 0, y: 0, z: 0}
+  m_Wins: 0
+  m_ColoredPlayerText: {r: 0, g: 0, b: 0, a: 0}
+  _healthState: 0
   player2: {fileID: 0}
   player2Collisions: []
   camRef: {fileID: 3037747066320295450}
@@ -3933,7 +3939,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3499592931575951077}
   m_LocalRotation: {x: 0.1557255, y: -0, z: -0, w: 0.98780036}
-  m_LocalPosition: {x: 1.3131695, y: 1.97, z: -3.34}
+  m_LocalPosition: {x: -2.3668306, y: 1.97, z: -1.42}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
