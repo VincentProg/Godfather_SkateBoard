@@ -12,9 +12,10 @@ public class OnMenu : MonoBehaviour
         animator = GetComponent<Animator>();
     }
     // Update is called once per frame
-    void Update()
+
+    public void ClickStart()
     {
-        if (Input.GetButtonDown("Jump")) animator.SetTrigger("StartButton");
+        animator.SetTrigger("StartButton");
     }
 
     public void OnEvent()

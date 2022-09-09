@@ -17,6 +17,9 @@ public class MultiplayerManager : MonoBehaviour
     [SerializeField]
     GameObject initialCam;
 
+    [SerializeField]
+    private Material matPlayer2;
+
     public void Awake()
     {
         if (instance == null)
@@ -42,6 +45,8 @@ public class MultiplayerManager : MonoBehaviour
 
             players[0].GetComponent<PlayerCol>().GetOtherPlayer(players[1]);
             players[1].GetComponent<PlayerCol>().GetOtherPlayer(players[0]);
+
+            players[1].GetComponentInChildren<SkinnedMeshRenderer>().material = matPlayer2;
 
             canvasSplitScreen.SetActive(true);
         }
