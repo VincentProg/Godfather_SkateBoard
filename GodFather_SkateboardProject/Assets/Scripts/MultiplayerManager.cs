@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class MultiplayerManager : MonoBehaviour
 {
     public static MultiplayerManager instance;
-    private HoverController[] players = new HoverController[2];
+    public HoverController[] players = new HoverController[2];
 
     [SerializeField]
     private LayerMask[] masks = new LayerMask[2];
@@ -35,6 +35,9 @@ public class MultiplayerManager : MonoBehaviour
             players[1] = player;
             players[0].transform.parent.GetComponentInChildren<Camera>().rect = new Rect(0, 0, 1, 0.5f);
             players[1].transform.parent.GetComponentInChildren<Camera>().rect = new Rect(0, 0.5f, 1, 0.5f);
+
+            players[0].GetComponent<PlayerCol>().GetOtherPlayer(players[1].gameObject);
+            players[1].GetComponent<PlayerCol>().GetOtherPlayer(players[0].gameObject);
 
             canvasSplitScreen.SetActive(true);
         }
