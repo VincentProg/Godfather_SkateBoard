@@ -41,11 +41,10 @@ public class MultiplayerManager : MonoBehaviour
 
         PlayerSpawn(player);
     }
-
     private void PlayerSpawn(HoverController player)
     {
         player.gameObject.layer = (players[1] != null) ? 8 : 7;
-        player.transform.Find("Vcam").gameObject.layer = (players[1] != null) ? 8 : 7;
+        player.camRef.layer = (players[1] != null) ? 8 : 7;
         player.transform.parent.GetComponentInChildren<Camera>().cullingMask = (players[1] != null) ? masks[1] : masks[0];
         if (players[1] != null) player.PlayerNumber = 2;
         else player.PlayerNumber = 1;

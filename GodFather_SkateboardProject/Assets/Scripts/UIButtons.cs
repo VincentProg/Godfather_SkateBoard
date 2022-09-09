@@ -9,6 +9,7 @@ public class UIButtons : MonoBehaviour
     private Vector3 initialPos;
     [SerializeField]
     private Vector3 initialScale, offset;
+    Animator animator;
 
     private RectTransform t;
 
@@ -17,11 +18,15 @@ public class UIButtons : MonoBehaviour
     [SerializeField]
     private Color SelectedColor;
 
+    public GameObject[] arrows;
+
     private void Start()
     {
         t = GetComponent<RectTransform>();
+        initialScale = t.localScale;
         initialPos = t.position;
         t.localScale = initialScale;
+        animator = GetComponent<Animator>();
         OnUnselect();
     }
 
@@ -30,6 +35,7 @@ public class UIButtons : MonoBehaviour
         t.position = initialPos + offset;
         t.localScale = Vector3.one;
         text.color = SelectedColor;
+        animator.SetBool("Active", true);
     }
 
     public void OnUnselect()
@@ -37,5 +43,6 @@ public class UIButtons : MonoBehaviour
         t.position = initialPos;
         t.localScale = initialScale;
         text.color = Color.white;
+        animator.SetBool("Active", false);
     }
 }
