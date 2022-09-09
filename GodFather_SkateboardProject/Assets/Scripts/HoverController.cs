@@ -55,32 +55,42 @@ public class HoverController : MonoBehaviour
     private Vector3 downDir;
     [HideInInspector] public Vector3 DirectionCOl;
 
+    [HideInInspector] public int m_Wins;
+    [HideInInspector] public Color m_ColoredPlayerText;
+
+    public enum HealthState { Alive, Dead, Respawn}
+    public HealthState _healthState;
+
     [HideInInspector] public HoverController player2;
     [HideInInspector] public BoxCollider[] player2Collisions;
 
+    public GameObject camRef;
     private void Awake()
     {
         //MultiplayerManager.instance.AddPlayer(this);
     }
-    private void OnEnable()
-    {
-        try
-        {
-            if (PlayerNumber == 0)
-                MultiplayerManager.instance.GetPlayer(1).AddRefToPlayer();
-            else
-                MultiplayerManager.instance.GetPlayer(0).AddRefToPlayer();
-        }
-        catch { }
-    }
-    public void AddRefToPlayer()
-    {
-        if (PlayerNumber == 0)
-            player2 = MultiplayerManager.instance.GetPlayer(1);
-        else
-            player2 = MultiplayerManager.instance.GetPlayer(0);
+    //private void OnEnable()
+    //{
+    //    try
+    //    {
+    //        if (PlayerNumber == 0)
+    //            MultiplayerManager.instance.GetPlayer(1).AddRefToPlayer();
+    //        else
+    //            MultiplayerManager.instance.GetPlayer(0).AddRefToPlayer();
+    //    }
+    //    catch { }
+    //}
+    //public void AddRefToPlayer()
+    //{
+    //    if (PlayerNumber == 0)
+    //    {
+    //        player2 = MultiplayerManager.instance.GetPlayer(1);
+    //        player2.AddRefToPlayer();
+    //    }
+    //    else
+    //        player2 = MultiplayerManager.instance.GetPlayer(0);
 
-    }
+    //}
 
     void Start()
     {
@@ -98,28 +108,12 @@ public class HoverController : MonoBehaviour
     {
         movementInput = context.ReadValue<Vector2>();
     }
-
-    private void Update()
-    {
-        LimitRotation();
-    }
+    
     float timeLeft;
     void FixedUpdate()
     {
-        if (grounded)
-        {
-            Axis = movementInput;
-            timeLeft = 3;
-            rb.AddForce(Axis.y * moveForce * Time.fixedDeltaTime * transform.forward, ForceMode.Impulse);
-        }
-        else
-        {
-            if(timeLeft > 0)
-            timeLeft -= Time.fixedDeltaTime;
-            else timeLeft = 0;
-            rb.AddForce(timeLeft * moveForce * Time.fixedDeltaTime * transform.forward, ForceMode.Impulse);
-
-        }
+        Axis = movementInput;
+        rb.AddForce(Axis.y * moveForce * Time.fixedDeltaTime * transform.forward, ForceMode.Impulse);
 
         for (int i = 0; i < 4; i++)
         {
@@ -127,16 +121,16 @@ public class HoverController : MonoBehaviour
         }
 
         TorqueSetting();
-        
+
         rb.AddTorque(Axis.x * turnTorque * Time.fixedDeltaTime * transform.up, ForceMode.Impulse);
+
         LimitMaxSpeed();
     }
     float calculspeed;
     private void TorqueSetting()
     {
         magnitude = Mathf.Clamp(rb.velocity.sqrMagnitude, _sharpTurn, _wideBend);
-        //Debug.Log(rb.velocity.magnitude + " && " + rb.velocity.sqrMagnitude);
-        turnTorque = Mathf.Lerp(turnTorque, currentTorque/magnitude, 2);
+        turnTorque = Mathf.Lerp(turnTorque, currentTorque / magnitude, 2);
     }
 
     public void OnImpulse()
@@ -150,41 +144,28 @@ public class HoverController : MonoBehaviour
         if (rb.velocity.magnitude > playerMaxSpeed)
             rb.velocity = rb.velocity.normalized * playerMaxSpeed;
     }
-    private void LimitRotation()
-    {
-        //Si le skate se retourne
-        if (Mathf.Abs(transform.position.z) >= 90f || Mathf.Abs(transform.position.x) >= 110f) { ResetRotation(); }
-        if (Input.GetKeyDown(KeyCode.R)) ResetRotation();
-    }
-    private void WaitToReset()
-    {
-        canReset = true;
-        //display "Press R to Reset" after 2Secs
-    }
-
-    private void ResetRotation()
-    {
-        canReset = false;
-        transform.rotation = _startRotation;
-        //ou appeler le spawner
-    }
 
     private void ApplyForce(Transform anchor, RaycastHit hit)
     {
-        if (Physics.Raycast(anchor.position, -anchor.up, out hit, minHeight))
-        {
-            Debug.DrawRay(anchor.position, -anchor.up * maxHeight, Color.green);
-            grounded = true;
-        }
         if (Physics.Raycast(anchor.position, -anchor.up, out hit, maxHeight))
         {
-            float force = 0;
-            force = Mathf.Abs(1 / (hit.point.y - anchor.position.y));
-            rb.AddForceAtPosition(transform.up * force * multiplier, anchor.position, ForceMode.Acceleration);
+            if (hit.collider.tag == "ground")
+            {
+                float force = 0;
+                force = Mathf.Abs(1 / (hit.point.y - anchor.position.y));
+                rb.AddForceAtPosition(transform.up * force * multiplier, anchor.position, ForceMode.Acceleration);
+
+            }
+            else FlipSkate();
+
         }
-        else grounded = false;
+        else FlipSkate();
     }
 
+    public void FlipSkate()
+    {
+        transform.rotation = Quaternion.Lerp(transform.rotation, new Quaternion(transform.rotation.x, transform.rotation.y, 0, 1), 1);
+    }
     IEnumerator Impulse()
     {
         canImpulse = false;
@@ -192,6 +173,16 @@ public class HoverController : MonoBehaviour
         yield return new WaitForSeconds(1);
         canImpulse = true;
     }
+
+    public void EnableControl()
+    {
+
+    }
+    public void DisableControl()
+    {
+
+    }
+    
     public void SetPause(InputAction.CallbackContext context)
     {
         if (context.started)
