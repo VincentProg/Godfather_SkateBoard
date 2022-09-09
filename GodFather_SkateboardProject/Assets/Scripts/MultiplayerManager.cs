@@ -36,8 +36,8 @@ public class MultiplayerManager : MonoBehaviour
             players[0].transform.parent.GetComponentInChildren<Camera>().rect = new Rect(0, 0, 1, 0.5f);
             players[1].transform.parent.GetComponentInChildren<Camera>().rect = new Rect(0, 0.5f, 1, 0.5f);
 
-            players[0].GetComponent<PlayerCol>().GetOtherPlayer(players[1].gameObject);
-            players[1].GetComponent<PlayerCol>().GetOtherPlayer(players[0].gameObject);
+            players[0].GetComponent<PlayerCol>().GetOtherPlayer(players[1]);
+            players[1].GetComponent<PlayerCol>().GetOtherPlayer(players[0]);
 
             canvasSplitScreen.SetActive(true);
         }

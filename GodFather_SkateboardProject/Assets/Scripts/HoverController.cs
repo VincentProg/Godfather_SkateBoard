@@ -9,7 +9,7 @@ public class HoverController : MonoBehaviour
 {
     //tesst
     [HideInInspector] public Rigidbody rb;
-    private Animator anim;
+    public Animator anim;
 
     PlayerInput myInputs;
 
@@ -63,8 +63,9 @@ public class HoverController : MonoBehaviour
     public HealthState _healthState;
 
     [HideInInspector] public HoverController player2;
-    [HideInInspector] public BoxCollider[] player2Collisions;
+    [HideInInspector] public BoxCollider player2Collisions;
 
+    public BoxCollider _hurtBox;
     public GameObject camRef;
     private void Awake()
     {
@@ -81,17 +82,12 @@ public class HoverController : MonoBehaviour
     //    }
     //    catch { }
     //}
-    //public void AddRefToPlayer()
-    //{
-    //    if (PlayerNumber == 0)
-    //    {
-    //        player2 = MultiplayerManager.instance.GetPlayer(1);
-    //        player2.AddRefToPlayer();
-    //    }
-    //    else
-    //        player2 = MultiplayerManager.instance.GetPlayer(0);
+    public void AddRefToPlayer(HoverController other)
+    {
+        other.player2 = this;
+        other.player2Collisions = _hurtBox;
 
-    //}
+    }
 
     void Start()
     {
@@ -114,6 +110,15 @@ public class HoverController : MonoBehaviour
     
     void FixedUpdate()
     {
+        //switch (_healthState)
+        //{
+        //    case HealthState.Dead:
+        //        break;
+        //        case HealthState.Respawn:
+        //        break
+        //            case
+        //}
+
         Axis = movementInput;
         if (Axis.y > 0)
             rb.AddForce(Axis.y * moveForce * Time.fixedDeltaTime * transform.forward, ForceMode.Impulse);
@@ -190,11 +195,13 @@ public class HoverController : MonoBehaviour
 
     public void EnableControl()
     {
-
+        moveForce = 2000f;
+        turnTorque = 100;
     }
     public void DisableControl()
     {
-
+        moveForce = 0f;
+        turnTorque = 0;
     }
     
     public void SetPause(InputAction.CallbackContext context)

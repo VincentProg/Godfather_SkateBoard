@@ -534,6 +534,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
+  anim: {fileID: 2124298309322185397}
   multiplier: 1
   maxHeight: 3
   minHeight: 1
@@ -555,7 +556,8 @@ MonoBehaviour:
   m_ColoredPlayerText: {r: 0, g: 0, b: 0, a: 0}
   _healthState: 0
   player2: {fileID: 0}
-  player2Collisions: []
+  player2Collisions: {fileID: 0}
+  _hurtBox: {fileID: 2146698336557723265}
   camRef: {fileID: 4026961473735373264}
 --- !u!114 &6138618759875335967
 MonoBehaviour:
@@ -1954,6 +1956,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d41b5ecc2fe6f054ea975a72753b9875, type: 3}
+--- !u!95 &2124298309322185397 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5088771255961843595, guid: d41b5ecc2fe6f054ea975a72753b9875, type: 3}
+  m_PrefabInstance: {fileID: 6621967590112521534}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &4917925169126423914 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2295162983874416724, guid: d41b5ecc2fe6f054ea975a72753b9875, type: 3}

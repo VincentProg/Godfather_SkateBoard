@@ -16,9 +16,8 @@ public class PlayerCol : MonoBehaviour
 
     Vector3 _dirToP1 = Vector3.zero;
 
-    public GameObject OtherPlayer;
-    public GameObject OtherHurtBox;
-    Rigidbody otherRb;
+    public HoverController OtherPlayer;
+    public BoxCollider OtherHurtBox;
 
     [Range(0f, 200f)] public float Force_To_OP = 100;
     [Range(0f, 200f)] public float Wallbounce_OnHit = 100;
@@ -45,10 +44,11 @@ public class PlayerCol : MonoBehaviour
         controllerStats = GetComponent<CharStats>();
     }
 
-    public void GetOtherPlayer(GameObject other)
+    public void GetOtherPlayer(HoverController other)
     {
         OtherPlayer = other;
-        otherRb = OtherPlayer.GetComponent<Rigidbody>();
+        OtherHurtBox = other._hurtBox;
+        OtherPlayer.AddRefToPlayer(controller);
     }
     //public void OnMove(InputAction.CallbackContext context)
     //{
@@ -61,7 +61,7 @@ public class PlayerCol : MonoBehaviour
             dontbounce = true;
         }
         
-        if (col.gameObject == OtherHurtBox)
+        if (col == OtherHurtBox)
         {
             if (!Isresting && !hitIt) { charStats.TakeDamage(charStats.base_Damage, rb.velocity.magnitude / 5f); }
             Isresting = true;
@@ -106,7 +106,7 @@ public class PlayerCol : MonoBehaviour
     {
         //controllerStats.DOSOMETHINGS;
         controller.PlayBumpAnim();
-        otherRb.AddForce(rb.velocity * (Force_To_OP / 100), ForceMode.VelocityChange);
+        OtherPlayer.rb.AddForce(rb.velocity * (Force_To_OP / 100), ForceMode.VelocityChange);
         rb.velocity = (rb.velocity - rb.velocity*.7f);
     }
 

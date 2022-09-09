@@ -65,34 +65,51 @@ public class GameManager : MonoBehaviour
         //m_CameraControl.m_Targets = targets;
     }
 
-
+    bool AllPlayersInScene = false;
     // This is called from start and will run each phase of the game one after another.
     private IEnumerator GameLoop()
     {
-        // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
-        yield return StartCoroutine(RoundStarting());
-
-        // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
-        yield return StartCoroutine(RoundPlaying());
-
-        // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
-        yield return StartCoroutine(RoundEnding());
-
-        // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
-        if (m_GameWinner != null)
+        if (MultiplayerManager.instance.players[1] != null)
         {
-            // If there is a game winner, restart the level.
-            Application.LoadLevel(Application.loadedLevel);
+            if (!AllPlayersInScene)
+            {
+                AllPlayersInScene = true;
+            }
+            // Start off by running the 'RoundStarting' coroutine but don't return until it's finished.
+            yield return StartCoroutine(RoundStarting());
+
+            // Once the 'RoundStarting' coroutine is finished, run the 'RoundPlaying' coroutine but don't return until it's finished.
+            yield return StartCoroutine(RoundPlaying());
+
+            // Once execution has returned here, run the 'RoundEnding' coroutine, again don't return until it's finished.
+            yield return StartCoroutine(RoundEnding());
+
+            // This code is not run until 'RoundEnding' has finished.  At which point, check if a game winner has been found.
+            if (m_GameWinner != null)
+            {
+                // If there is a game winner, restart the level.
+                //Application.LoadLevel(Application.loadedLevel);
+                m_MessageText.text = "End";
+            }
+            else
+            {
+                // If there isn't a winner yet, restart this coroutine so the loop continues.
+                // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
+                StartCoroutine(GameLoop());
+            }
         }
         else
         {
-            // If there isn't a winner yet, restart this coroutine so the loop continues.
-            // Note that this coroutine doesn't yield.  This means that the current version of the GameLoop will end.
+            yield return new WaitForSeconds(1);
+            m_MessageText.text = "Waiting for players";
             StartCoroutine(GameLoop());
+
         }
+
+
     }
 
-
+    public Spawner spawner;
     private IEnumerator RoundStarting()
     {
         // As soon as the round starts reset the tanks and make sure they can't move.
@@ -162,10 +179,10 @@ public class GameManager : MonoBehaviour
         int numPlayersLeft = 0;
 
         // Go through all the tanks...
-        for (int i = 0; i < m_Players.Length; i++)
+        for (int i = 0; i < MultiplayerManager.instance.players.Length; i++)
         {
             // ... and if they are active, increment the counter.
-            if (m_Players[i]._healthState == HoverController.HealthState.Alive)
+            if (MultiplayerManager.instance.players[i]._healthState == HoverController.HealthState.Alive)
                 numPlayersLeft++;
         }
 
@@ -240,6 +257,8 @@ public class GameManager : MonoBehaviour
         for (int i = 0; i < m_Players.Length; i++)
         {
             m_Players[i]._healthState = HoverController.HealthState.Respawn;
+            spawner.SpawnAtPosition(Vector3.zero, m_Players[i]);
+            m_Players[i].GetComponent<CharStats>().SetHealth(100);
         }
     }
 

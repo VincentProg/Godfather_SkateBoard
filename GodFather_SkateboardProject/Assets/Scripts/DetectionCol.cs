@@ -57,7 +57,7 @@ public class DetectionCol : MonoBehaviour
     void EjectP2()
     {
         controller.rb.velocity = Vector3.zero;
-        _dirToP1 = transform.position - controller.player2.player2Collisions[2].transform.position + new Vector3(0, -0f, 0);
+        _dirToP1 = transform.position - controller.player2.player2Collisions.transform.position + new Vector3(0, -0f, 0);
 
         controller.player2.rb.AddForce(-_dirToP1 * 20f, ForceMode.Impulse);
         print("Bump to " + -_dirToP1);

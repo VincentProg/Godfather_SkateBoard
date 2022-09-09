@@ -21,6 +21,10 @@ public class CharStats : MonoBehaviour
     {
         float Totdamage = damage * Vel;
         Health -= Totdamage;
+        if(Health < 0)
+        {
+            player._healthState = HoverController.HealthState.Dead;
+        }
         //print("Hit : " + _myLifeBar.transform.parent.name + ", Taken : " + Totdamage + ", Now at : " + Health + "%");
         player.playDamagesAnim(Health);
 
@@ -37,6 +41,7 @@ public class CharStats : MonoBehaviour
     public void SetHealth(float heatlh)
     {
         if (heatlh >= 100) { heatlh = 100; }
+        player._healthState = HoverController.HealthState.Alive;
         Health = heatlh;
         //print("Set : " + _myLifeBar.transform.parent.name + ", Now at : " + Health + "%");
 
