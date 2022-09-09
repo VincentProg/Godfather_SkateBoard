@@ -9,6 +9,7 @@ public class HoverController : MonoBehaviour
 {
     //tesst
     [HideInInspector] public Rigidbody rb;
+    private Animator anim;
 
     PlayerInput myInputs;
 
@@ -95,6 +96,7 @@ public class HoverController : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        anim = GetComponentInChildren<Animator>();
         canImpulse = true;
         _startRotation = new Quaternion(0, 0, 0, 1);
         currentTorque = turnTorque;
@@ -107,13 +109,25 @@ public class HoverController : MonoBehaviour
     public void OnMove(InputAction.CallbackContext context)
     {
         movementInput = context.ReadValue<Vector2>();
+        PlayRightLeftAnim(movementInput.x);
     }
     
-    float timeLeft;
     void FixedUpdate()
     {
         Axis = movementInput;
-        rb.AddForce(Axis.y * moveForce * Time.fixedDeltaTime * transform.forward, ForceMode.Impulse);
+        if (Axis.y > 0)
+            rb.AddForce(Axis.y * moveForce * Time.fixedDeltaTime * transform.forward, ForceMode.Impulse);
+        else if (Axis.y < 0 && rb.velocity.sqrMagnitude < 1f)
+        {
+            if (Axis.x < 0)
+                rb.AddTorque(Axis.x * turnTorque * Time.fixedDeltaTime * transform.up, ForceMode.Impulse);
+            else if (Axis.x > 0)
+                rb.AddTorque(Axis.x * turnTorque * Time.fixedDeltaTime * transform.up, ForceMode.Impulse);
+            else
+                rb.AddTorque(Axis.y * turnTorque * Time.fixedDeltaTime * transform.up, ForceMode.Impulse);
+        }
+        else if (Axis.y < 0 && rb.velocity.sqrMagnitude > 1f)
+            rb.AddForce(Axis.y * moveForce * Time.fixedDeltaTime * transform.forward, ForceMode.Impulse);
 
         for (int i = 0; i < 4; i++)
         {
@@ -126,7 +140,6 @@ public class HoverController : MonoBehaviour
 
         LimitMaxSpeed();
     }
-    float calculspeed;
     private void TorqueSetting()
     {
         magnitude = Mathf.Clamp(rb.velocity.sqrMagnitude, _sharpTurn, _wideBend);
@@ -169,6 +182,7 @@ public class HoverController : MonoBehaviour
     IEnumerator Impulse()
     {
         canImpulse = false;
+        PlayPushAnim();
         rb.AddForce(moveForce * Time.fixedDeltaTime * transform.forward * strengthImpulse, ForceMode.Impulse);
         yield return new WaitForSeconds(1);
         canImpulse = true;
@@ -220,6 +234,30 @@ public class HoverController : MonoBehaviour
     {
         if (context.started)
             Btn_Selector.instance.LaunchBtn();
+    }
+
+    public void PlayRightLeftAnim(float x)
+    {
+        if (x > 0)
+            anim.SetBool("GoRight", true);
+        else anim.SetBool("GoLeft", true);
+    }
+
+    public void playDamagesAnim(float health)
+    {
+        if (health > 0)
+            anim.SetTrigger("Hit");
+        else anim.SetTrigger("Death");
+    }
+
+    public void PlayBumpAnim()
+    {
+        anim.SetTrigger("Bump");
+    }
+
+    public void PlayPushAnim()
+    {
+        anim.SetTrigger("Push");
     }
 }
 
