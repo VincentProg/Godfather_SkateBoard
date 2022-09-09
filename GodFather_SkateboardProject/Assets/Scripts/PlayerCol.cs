@@ -6,8 +6,8 @@ using UnityEngine.InputSystem;
 
 public class PlayerCol : MonoBehaviour
 {
-    PlayerInput myInputs;
-    private Vector2 movementInput;
+    //PlayerInput myInputs;
+    //private Vector2 movementInput;
 
     private HoverController controller;
     private CharStats controllerStats;
@@ -38,17 +38,22 @@ public class PlayerCol : MonoBehaviour
     Vector3 _Velgo;
     private void Start()
     {
-        myInputs = GetComponent<PlayerInput>();
+        //myInputs = GetComponent<PlayerInput>();
         charStats = GetComponent<CharStats>();
-        rb = GetComponent<Rigidbody>();
-        otherRb = OtherPlayer.GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();        
         controller = GetComponent<HoverController>();
         controllerStats = GetComponent<CharStats>();
     }
-    public void OnMove(InputAction.CallbackContext context)
+
+    public void GetOtherPlayer(GameObject other)
     {
-        movementInput = context.ReadValue<Vector2>();
+        OtherPlayer = other;
+        otherRb = OtherPlayer.GetComponent<Rigidbody>();
     }
+    //public void OnMove(InputAction.CallbackContext context)
+    //{
+    //    movementInput = context.ReadValue<Vector2>();
+    //}
     private void OnTriggerEnter(Collider col)
     {
         if (col.gameObject.CompareTag("Wall"))
@@ -133,9 +138,9 @@ public class PlayerCol : MonoBehaviour
     IEnumerator CDrest()
     {
         cdrest = true;
-        OtherPlayer.transform.GetChild(0).gameObject.SetActive(false);
+        OtherPlayer?.transform.GetChild(0).gameObject.SetActive(false);
         yield return new WaitForSeconds(.5f);
-        OtherPlayer.transform.GetChild(0).gameObject.SetActive(true);
+        OtherPlayer?.transform.GetChild(0).gameObject.SetActive(true);
         yield return new WaitForSeconds(.5f);
         cdrest = false;
     }
