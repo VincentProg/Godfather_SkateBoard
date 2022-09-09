@@ -11,17 +11,22 @@ public class CharStats : MonoBehaviour
     public float base_Damage = 10;
 
     public Image _myLifeBar;
-    //PlayerCol playerCol;
+    private Animator anim;
+    HoverController player;
 
     void Start()
     {
-        //playerCol = GetComponent<PlayerCol>();
+        player = GetComponent<HoverController>();
     }
     public void TakeDamage(float damage, float Vel)
     {
         float Totdamage = damage * Vel;
         Health -= Totdamage;
         print("Hit : " + _myLifeBar.transform.parent.name + ", Taken : " + Totdamage + ", Now at : " + Health + "%");
+        player.playDamagesAnim(Health);
+
+
+        
     }
     public void AddHealth(float heatlh)
     {

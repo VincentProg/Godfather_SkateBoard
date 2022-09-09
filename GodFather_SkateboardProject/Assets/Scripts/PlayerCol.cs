@@ -44,7 +44,6 @@ public class PlayerCol : MonoBehaviour
         otherRb = OtherPlayer.GetComponent<Rigidbody>();
         controller = GetComponent<HoverController>();
         controllerStats = GetComponent<CharStats>();
-
     }
     public void OnMove(InputAction.CallbackContext context)
     {
@@ -59,7 +58,10 @@ public class PlayerCol : MonoBehaviour
         
         if (col.gameObject == OtherHurtBox)
         {
-            if (!Isresting) { charStats.TakeDamage(charStats.base_Damage, rb.velocity.magnitude / 5f); }
+            if (!Isresting) { 
+                charStats.TakeDamage(charStats.base_Damage, rb.velocity.magnitude / 5f);
+
+            }
             Isresting = true;
             EjectOP();
         }
@@ -93,6 +95,7 @@ public class PlayerCol : MonoBehaviour
         {
             Debug.Log("HIIIIIIIIIIIIIIIIT");
         }
+        controller.PlayBumpAnim();
         rb.velocity = Vector3.zero;
         rb.AddForce(dir * (_percent/100), ForceMode.VelocityChange);
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
@@ -100,6 +103,7 @@ public class PlayerCol : MonoBehaviour
     void EjectOP()
     {
         //controllerStats.DOSOMETHINGS;
+        controller.PlayBumpAnim();
         otherRb.AddForce(rb.velocity * (Force_To_OP / 100), ForceMode.VelocityChange);
         rb.velocity = (rb.velocity - rb.velocity*.7f);
     }
