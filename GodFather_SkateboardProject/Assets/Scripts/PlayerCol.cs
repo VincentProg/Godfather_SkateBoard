@@ -59,7 +59,7 @@ public class PlayerCol : MonoBehaviour
         
         if (col.gameObject == OtherHurtBox)
         {
-            if (!Isresting) { charStats.TakeDamage(charStats.base_Damage, rb.velocity.magnitude / 5f); }
+            if (!Isresting && !hitIt) { charStats.TakeDamage(charStats.base_Damage, rb.velocity.magnitude / 5f); }
             Isresting = true;
             EjectOP();
         }
@@ -115,12 +115,6 @@ public class PlayerCol : MonoBehaviour
             }
 
         }
-
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            StopCoroutine(Cd_to_bounce());
-            StartCoroutine(Cd_to_bounce());
-        }
         if (Input.GetKeyDown(KeyCode.O))
         {
             charStats.AddHealth(100);
@@ -128,7 +122,11 @@ public class PlayerCol : MonoBehaviour
         _Velgo = rb.velocity;//NE PAS ENLEVER A GARDER !!!
         Debug.DrawRay(transform.position, rb.velocity);
     }
-
+    public void Bouncer()
+    {
+        StopCoroutine(Cd_to_bounce());
+        StartCoroutine(Cd_to_bounce());
+    }
     IEnumerator CDrest()
     {
         cdrest = true;

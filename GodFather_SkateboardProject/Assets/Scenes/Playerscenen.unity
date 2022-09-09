@@ -567,14 +567,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 427001433}
-  m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0.44, y: 0.28329834, z: 3.64}
+  m_LocalRotation: {x: -0, y: 0.8251366, z: -0, w: 0.5649333}
+  m_LocalPosition: {x: 6.4, y: 0.28329834, z: 13.7}
   m_LocalScale: {x: 0.33, y: 3.7, z: 40.04988}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 111.205, z: 0}
 --- !u!54 &427001438
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -598,22 +598,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4226722419865093904, guid: 7a156f9ab59ae8b4188a3ba00aaca3e3, type: 3}
-      propertyPath: m_Color.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226722419865093904, guid: 7a156f9ab59ae8b4188a3ba00aaca3e3, type: 3}
-      propertyPath: m_Color.g
-      value: 0.9960785
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226722419865093904, guid: 7a156f9ab59ae8b4188a3ba00aaca3e3, type: 3}
-      propertyPath: m_Color.r
-      value: 0.45098042
-      objectReference: {fileID: 0}
-    - target: {fileID: 4226722419865093904, guid: 7a156f9ab59ae8b4188a3ba00aaca3e3, type: 3}
-      propertyPath: m_FillAmount
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 4226722421286425606, guid: 7a156f9ab59ae8b4188a3ba00aaca3e3, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -713,7 +697,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3268373052884437290, guid: d67c6690aa23c6446ab907da111a20aa, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.8299999
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5735766922895519065, guid: d67c6690aa23c6446ab907da111a20aa, type: 3}
       propertyPath: m_RootOrder
@@ -1203,7 +1187,7 @@ GameObject:
   - component: {fileID: 780046781}
   m_Layer: 0
   m_Name: Plane
-  m_TagString: Untagged
+  m_TagString: ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1616,8 +1600,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 893732228}
   m_LocalRotation: {x: 0, y: 0.38268343, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: -11.8, y: 0.28329834, z: 7.7}
-  m_LocalScale: {x: 0.33, y: 3.7, z: 17.7255}
+  m_LocalPosition: {x: -13.6, y: 0.28329834, z: 13.8}
+  m_LocalScale: {x: 0.33, y: 3.7, z: 31.636473}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -4632,6 +4616,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3268373052884437290, guid: d67c6690aa23c6446ab907da111a20aa, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.8299999
+      objectReference: {fileID: 0}
     - target: {fileID: 5735766922895519065, guid: d67c6690aa23c6446ab907da111a20aa, type: 3}
       propertyPath: m_RootOrder
       value: 13

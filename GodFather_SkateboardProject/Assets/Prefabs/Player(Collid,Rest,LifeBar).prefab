@@ -350,7 +350,7 @@ GameObject:
   - component: {fileID: 6138618759875335967}
   - component: {fileID: 1869626679513397412}
   - component: {fileID: 1869626679513397402}
-  - component: {fileID: 6138618759875335964}
+  - component: {fileID: 5613654042192589905}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -478,7 +478,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.35, y: 0.15, z: 1.35}
   m_Center: {x: 0, y: 0.2, z: 0}
---- !u!114 &6138618759875335964
+--- !u!114 &5613654042192589905
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -518,7 +518,7 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: d908dad1-093a-4263-917b-f59673466f49
-    m_ActionName: Player/Pause
+    m_ActionName: Gameplay/Direction[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/XInputControllerWindows/dpad/up,/XInputControllerWindows/dpad/down,/XInputControllerWindows/dpad/left,/XInputControllerWindows/dpad/right]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1869626679513397401}
@@ -534,12 +534,12 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: c3036f8a-4103-4669-b38c-ce79f3bebcdd
-    m_ActionName: Player/Impulse[/Keyboard/space,/XInputControllerWindows/buttonSouth]
+    m_ActionName: Gameplay/Impulse[/Keyboard/space,/XInputControllerWindows/buttonSouth]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1869626679513397401}
         m_TargetAssemblyTypeName: HoverController, Assembly-CSharp
-        m_MethodName: SetPause
+        m_MethodName: Pause_BtnDown
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -550,7 +550,23 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
     m_ActionId: b02ab5b8-5b05-43c9-8d40-3b55156bb3ba
-    m_ActionName: Player/Pause[/XInputControllerWindows/start,/Keyboard/escape]
+    m_ActionName: Gameplay/Pause[/XInputControllerWindows/start,/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6138618759875335967}
+        m_TargetAssemblyTypeName: PlayerCol, Assembly-CSharp
+        m_MethodName: Bouncer
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 8e1b9a87-4776-4f9e-bd3a-ba56c6a780ed
+    m_ActionName: Gameplay/Bounce[/XInputControllerWindows/buttonEast,/Keyboard/q]
   - m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1869626679513397401}
@@ -599,10 +615,6 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 1a561b0d-e92d-4996-9ae8-1b5e2066d5d0
     m_ActionName: PauseMenu/Down[/Keyboard/s,/Keyboard/downArrow,/XInputControllerWindows/dpad/down]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 8e1b9a87-4776-4f9e-bd3a-ba56c6a780ed
-    m_ActionName: Gameplay/New action
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: Gameplay
