@@ -11,7 +11,8 @@ public class PlayerCol : MonoBehaviour
 
     private HoverController controller;
     private CharStats controllerStats;
-    Rigidbody rb;
+    private CharStats charStats;
+    private Rigidbody rb;
 
     Vector3 _dirToP1 = Vector3.zero;
 
@@ -22,15 +23,23 @@ public class PlayerCol : MonoBehaviour
     [Range(0f, 200f)] public float Force_To_OP = 100;
     [Range(0f, 200f)] public float Wallbounce_OnHit = 100;
     [Range(0f, 200f)] public float Wallbounce_unpressed = 100;
+    public float Bounce_React = 5f;
+
     [Range(.1f, 1.5f)] public float min_Speed_To_Bounce;
+    [Range(.01f, 2f)] public float Max_Time_To_React = .5f;
+    public float Resting_Time = 3f;
+
     bool dontbounce = false;
     bool hitIt = false;
+
+    bool Isresting = false;
+    bool cdrest = false;
 
     Vector3 _Velgo;
     private void Start()
     {
         myInputs = GetComponent<PlayerInput>();
-
+        charStats = GetComponent<CharStats>();
         rb = GetComponent<Rigidbody>();
         otherRb = OtherPlayer.GetComponent<Rigidbody>();
         controller = GetComponent<HoverController>();
@@ -46,11 +55,12 @@ public class PlayerCol : MonoBehaviour
         if (col.gameObject.CompareTag("Wall"))
         {
             dontbounce = true;
-            print(dontbounce);
         }
         
         if (col.gameObject == OtherHurtBox)
         {
+            if (!Isresting) { charStats.TakeDamage(charStats.base_Damage, rb.velocity.magnitude / 5f); }
+            Isresting = true;
             EjectOP();
         }
 
@@ -58,7 +68,6 @@ public class PlayerCol : MonoBehaviour
     private void OnTriggerExit(Collider col)
     {
         dontbounce = false;
-        print(dontbounce);
     }
     private void OnCollisionEnter(Collision col)
     {
@@ -84,11 +93,9 @@ public class PlayerCol : MonoBehaviour
         {
             Debug.Log("HIIIIIIIIIIIIIIIIT");
         }
-        print(rb.velocity);
         rb.velocity = Vector3.zero;
         rb.AddForce(dir * (_percent/100), ForceMode.VelocityChange);
         transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
-        print(rb.velocity);
     }
     void EjectOP()
     {
@@ -99,19 +106,48 @@ public class PlayerCol : MonoBehaviour
 
     void Update()
     {
+        if (Isresting) 
+        {
+            StartCoroutine(Resting());
+            if (!cdrest)
+            {
+                StartCoroutine(CDrest());
+            }
+
+        }
+
         if (Input.GetKeyDown(KeyCode.A))
         {
+            StopCoroutine(Cd_to_bounce());
             StartCoroutine(Cd_to_bounce());
+        }
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            charStats.AddHealth(100);
         }
         _Velgo = rb.velocity;//NE PAS ENLEVER A GARDER !!!
         Debug.DrawRay(transform.position, rb.velocity);
     }
-    
-    
+
+    IEnumerator CDrest()
+    {
+        cdrest = true;
+        OtherPlayer.transform.GetChild(0).gameObject.SetActive(false);
+        yield return new WaitForSeconds(.5f);
+        OtherPlayer.transform.GetChild(0).gameObject.SetActive(true);
+        yield return new WaitForSeconds(.5f);
+        cdrest = false;
+    }
+    IEnumerator Resting()
+    {
+        yield return new WaitForSeconds(Resting_Time);
+        Isresting = false;
+    }
+
     IEnumerator Cd_to_bounce()
     {
         hitIt = true;
-        yield return new WaitForSeconds(.5f);
+        yield return new WaitForSeconds(Max_Time_To_React);
         hitIt = false;
     }
 }
