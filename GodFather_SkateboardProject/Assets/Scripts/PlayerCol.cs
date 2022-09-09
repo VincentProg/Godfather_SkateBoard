@@ -63,10 +63,7 @@ public class PlayerCol : MonoBehaviour
         
         if (col.gameObject == OtherHurtBox)
         {
-            if (!Isresting) { 
-                charStats.TakeDamage(charStats.base_Damage, rb.velocity.magnitude / 5f);
-
-            }
+            if (!Isresting && !hitIt) { charStats.TakeDamage(charStats.base_Damage, rb.velocity.magnitude / 5f); }
             Isresting = true;
             EjectOP();
         }
