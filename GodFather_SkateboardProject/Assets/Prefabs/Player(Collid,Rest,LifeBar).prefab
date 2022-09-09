@@ -392,7 +392,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Health: 100
   base_Damage: 10
-  _myLifeBar: {fileID: 0}
 --- !u!114 &1869626679513397401
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -428,7 +427,7 @@ MonoBehaviour:
   _healthState: 0
   player2: {fileID: 0}
   player2Collisions: []
-  camRef: {fileID: 3268373052884437295}
+  camRef: {fileID: 4026961473735373264}
 --- !u!114 &6138618759875335967
 MonoBehaviour:
   m_ObjectHideFlags: 0
