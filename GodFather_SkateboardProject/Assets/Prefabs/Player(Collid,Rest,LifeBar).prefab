@@ -422,8 +422,12 @@ MonoBehaviour:
   grounded: 0
   PlayerNumber: 0
   DirectionCOl: {x: 0, y: 0, z: 0}
+  m_Wins: 0
+  m_ColoredPlayerText: {r: 0, g: 0, b: 0, a: 0}
+  _healthState: 0
   player2: {fileID: 0}
   player2Collisions: []
+  camRef: {fileID: 3268373052884437295}
 --- !u!114 &6138618759875335967
 MonoBehaviour:
   m_ObjectHideFlags: 0
