@@ -14,6 +14,9 @@ public class MultiplayerManager : MonoBehaviour
     [SerializeField]
     private GameObject canvasSplitScreen;
 
+    [SerializeField]
+    GameObject initialCam;
+
     public void Awake()
     {
         if (instance == null)
@@ -30,6 +33,7 @@ public class MultiplayerManager : MonoBehaviour
         if(players[0] == null)
         {
             players[0] = player;
+            initialCam.SetActive(false);
         } else
         {
             players[1] = player;
