@@ -23,8 +23,8 @@ public class HoverController : MonoBehaviour
 
     [Header("----------------------------------------")]
     [Header("Forward")]
-    [SerializeField] private float moveForce = 1000f;
-    [SerializeField] private float strengthImpulse = 50;
+    [SerializeField] private float moveForce = 10000f;
+    [SerializeField] private float strengthImpulse = 5000;
 
     [Space(10)]
     [Header("Turn")]
