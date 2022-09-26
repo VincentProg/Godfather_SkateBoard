@@ -542,12 +542,12 @@ MonoBehaviour:
   - {fileID: 1869626679506778931}
   - {fileID: 1869626679352308309}
   - {fileID: 1869626679661350766}
-  moveForce: 750
-  strengthImpulse: 20
+  moveForce: 500
+  strengthImpulse: 15
   turnTorque: 100
   _sharpTurn: 0.3
   _wideBend: 0.5
-  playerMaxSpeed: 300
+  playerMaxSpeed: 250
   grounded: 0
   PlayerNumber: 0
   DirectionCOl: {x: 0, y: 0, z: 0}
@@ -571,7 +571,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   OtherPlayer: {fileID: 0}
   OtherHurtBox: {fileID: 0}
-  Force_To_OP: 10
+  Force_To_OP: 100
   Wallbounce_OnHit: 125
   Wallbounce_unpressed: 95
   Bounce_React: 5
@@ -587,7 +587,7 @@ Rigidbody:
   m_GameObject: {fileID: 1869626679513397414}
   serializedVersion: 2
   m_Mass: 100
-  m_Drag: 0.5
+  m_Drag: 0.45
   m_AngularDrag: 5
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -1086,8 +1086,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3268373052884437295}
-  m_LocalRotation: {x: 0.15976429, y: -0.2505858, z: 0.041969556, w: 0.95389766}
-  m_LocalPosition: {x: -1.3606806, y: 0.32284576, z: 1.4632208}
+  m_LocalRotation: {x: 0.15572548, y: -0, z: -0, w: 0.98780036}
+  m_LocalPosition: {x: 0, y: 1.3299999, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1468,7 +1468,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4026961473735373264}
-  m_LocalRotation: {x: 0.15572552, y: -0.000000011578847, z: 0.0000000018253906, w: 0.9878004}
+  m_LocalRotation: {x: 0.15572548, y: -0, z: -0, w: 0.98780036}
   m_LocalPosition: {x: 0, y: 1.5699999, z: -3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
